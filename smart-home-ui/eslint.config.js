@@ -3,6 +3,7 @@ import angularTemplate from '@angular-eslint/eslint-plugin-template';
 import parserAngular from '@angular-eslint/template-parser';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import parserTypescript from '@typescript-eslint/parser';
+import prettier from 'eslint-config-prettier';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
@@ -23,6 +24,7 @@ export default [
     },
     rules: {
       ...angular.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
       ...unicorn.configs.recommended.rules, 
        // Кастомизация правил
       'unicorn/filename-case': [
@@ -51,5 +53,9 @@ export default [
     plugins: {
       '@angular-eslint/template': angularTemplate
     }
+  },
+  prettier,
+  {
+    ignores: ['dist/**', 'node_modules/**']
   }
 ];
