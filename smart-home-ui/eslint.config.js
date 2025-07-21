@@ -13,49 +13,49 @@ export default [
     languageOptions: {
       parser: parserTypescript,
       parserOptions: {
-        project: './tsconfig.json'
+        project: './tsconfig.json',
       },
-      globals: globals.browser
+      globals: globals.browser,
     },
     plugins: {
       '@angular-eslint': angular,
       '@typescript-eslint': tseslint,
-      unicorn
+      unicorn,
     },
     rules: {
       ...angular.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
-      ...unicorn.configs.recommended.rules, 
-       // Кастомизация правил
+      ...unicorn.configs.recommended.rules,
+      // Кастомизация правил
       'unicorn/filename-case': [
         'error',
-        { 
+        {
           cases: {
-            kebabCase: true,    // my-component.ts
-            pascalCase: true     // AppComponent.ts
+            kebabCase: true, // my-component.ts
+            pascalCase: true, // AppComponent.ts
           },
-          ignore: ['\\.spec\\.ts$'] // Игнорируем тесты
-        }
+          ignore: ['\\.spec\\.ts$'], // Игнорируем тесты
+        },
       ],
       'unicorn/prevent-abbreviations': 'off', // Отключаем для Angular
       'unicorn/no-null': 'off', // Разрешаем null
       '@angular-eslint/component-selector': [
         'error',
-        { type: 'element', prefix: 'app', style: 'kebab-case' }
-      ]
-    }
+        { type: 'element', prefix: 'app', style: 'kebab-case' },
+      ],
+    },
   },
   {
     files: ['**/*.html'],
     languageOptions: {
-      parser: parserAngular
+      parser: parserAngular,
     },
     plugins: {
-      '@angular-eslint/template': angularTemplate
-    }
+      '@angular-eslint/template': angularTemplate,
+    },
   },
   prettier,
   {
-    ignores: ['dist/**', 'node_modules/**']
-  }
+    ignores: ['dist/**', 'node_modules/**'],
+  },
 ];
