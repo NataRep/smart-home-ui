@@ -1,0 +1,34 @@
+@use '../../../../styles/variables' as *;
+
+nav {
+  display: grid;
+  gap: 0.5rem;
+  transition: opacity 0.5s;
+}
+
+nav.sidebar-open {
+  opacity: 1;
+}
+
+nav.sidebar-closed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+a {
+  cursor: pointer;
+  display: flex;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid $background-color;
+  transition: border 0.25s linear;
+
+  i {
+    margin-right: 0.5rem;
+  }
+
+  &.active {
+    border: 2px solid $secondary-color;
+    color: $secondary-color;
+  }
+}

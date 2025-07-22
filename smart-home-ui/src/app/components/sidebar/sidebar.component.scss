@@ -1,0 +1,14 @@
+@use '../../../styles/variables' as *;
+
+app-sidebar-menu {
+  flex-grow: 1;
+
+  @include responsive-container-padding;
+}
+
+app-sidebar-footer {
+  line-height: 1rem;
+  border-top: solid 1px $grey-color;
+
+  @include responsive-container-padding;
+}

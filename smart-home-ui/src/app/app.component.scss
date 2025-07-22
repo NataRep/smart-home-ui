@@ -1,0 +1,19 @@
+@use '../styles/variables' as *;
+
+app-sidebar {
+  width: 4rem;
+  border-right: 1px solid $grey-color;
+  overflow: hidden;
+  transition: width 0.5s;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &.sidebar--open {
+    width: 14rem;
+  }
+}
+
+main {
+  @include responsive-container-padding;
+}

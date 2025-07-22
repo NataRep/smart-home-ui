@@ -1,0 +1,83 @@
+@use '../../../../styles/variables' as *;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 12rem;
+  border-bottom: solid 1px $grey-color;
+
+  @include responsive-container-padding;
+}
+
+.button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.lines {
+  display: grid;
+  grid-column: auto;
+  gap: 0.25rem;
+  width: 1.5rem;
+}
+
+.line {
+  height: 0.125rem;
+  background: $grey-light-color;
+  transition: width 0.5s;
+}
+
+.sidebar-open .line {
+  &:nth-child(1),
+  &:nth-child(3) {
+    width: 70%;
+  }
+  &:nth-child(2) {
+    width: 40%;
+  }
+}
+
+.sidebar-closed .line {
+  &:nth-child(1),
+  &:nth-child(3) {
+    width: 40%;
+  }
+  &:nth-child(2) {
+    width: 50%;
+  }
+}
+
+.arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: $grey-light-color;
+}
+
+.title {
+  margin-left: 1rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: $grey-light-color;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+.sidebar-open {
+  .title {
+    opacity: 1;
+  }
+}
+
+.sidebar-closed {
+  .title {
+    opacity: 0;
+  }
+}

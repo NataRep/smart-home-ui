@@ -1,0 +1,13 @@
+<div class="header" [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
+  <div class="button" (click)="toggleSidebar()">
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <span class="arrow">{{ isSidebarOpen ? '&lt;' : '&gt;' }}</span>
+  </div>
+  <div class="title">
+    <ng-content></ng-content>
+  </div>
+</div>

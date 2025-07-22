@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/variables' as *;
+@import 'normalize.css/normalize.css';
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+a {
+  text-decoration: none;
+  color: $primary-color;
+  transition: color 0.25s;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
+  &:active {
+    color: $secondary-color;
+  }
+}
+
+app-root {
+  display: flex;
+  height: 100vh;
+}
