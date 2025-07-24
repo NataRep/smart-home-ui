@@ -2,6 +2,7 @@
 
 app-sidebar {
   width: 4rem;
+  background-color: $background-color-secondary;
   border-right: 1px solid $grey-color;
   overflow: hidden;
   transition: width 0.5s;
@@ -12,9 +13,13 @@ app-sidebar {
 
   &.sidebar--open {
     width: 14rem;
+
+    @media (max-width: 980px) {
+      width: 100%;
+    }
   }
 }
 
 main {
-  @include responsive-container-padding;
+  width: 100%;
 }
