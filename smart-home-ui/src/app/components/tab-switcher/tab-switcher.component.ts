@@ -1,19 +1,31 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { Tab } from '../../models/response-models';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Card, Tab } from '../../models/response-models';
 import { TabsService } from '../../services/cards.service';
+import { CardListComponent } from '../card-list/card-list.component';
 
 @Component({
   selector: 'app-tab-switcher',
   standalone: true,
-  imports: [],
+  imports: [CardListComponent],
   templateUrl: './tab-switcher.component.html',
   styleUrl: './tab-switcher.component.scss',
 })
 export class TabSwitcherComponent implements OnInit {
   private tabService = inject(TabsService);
   tabs = signal<Tab[]>([]);
-  activeTab = signal<string | null>(null);
+  activeTabId = signal<string | null>(null);
   isLoading = signal(true);
+
+  private getActiveTabCards(): Card[] {
+    const activeId = this.activeTabId();
+    if (!activeId) return [];
+    const foundTab = this.tabs().find(function (tab) {
+      return tab.id === activeId;
+    });
+    return foundTab?.cards || [];
+  }
+
+  activeTabCards = computed(this.getActiveTabCards.bind(this));
 
   ngOnInit() {
     this.loadTabs();
@@ -26,7 +38,7 @@ export class TabSwitcherComponent implements OnInit {
       next: (response) => {
         this.tabs.set(response.tabs);
         if (response.tabs.length > 0) {
-          this.activeTab.set(response.tabs[0].id);
+          this.activeTabId.set(response.tabs[0].id);
         }
         this.isLoading.set(false);
       },
@@ -37,20 +49,12 @@ export class TabSwitcherComponent implements OnInit {
   }
 
   setActiveTab(tabId: string) {
-    if (this.tabs().some((tab) => tab.id === tabId)) {
-      this.activeTab.set(tabId);
+    if (
+      this.tabs().some(function (tab) {
+        return tab.id === tabId;
+      })
+    ) {
+      this.activeTabId.set(tabId);
     }
-  }
-
-  getActiveTabCards() {
-    const activeId = this.activeTab();
-
-    if (!activeId) return [];
-
-    const result = this.tabs().find((tab) => tab.id === activeId)?.cards || [];
-
-    console.log('getActiveTabCards', result);
-
-    return result;
   }
 }
