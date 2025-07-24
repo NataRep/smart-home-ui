@@ -1,0 +1,20 @@
+@if (isLoading()) {
+  <div class="loading">Загрузка данных...</div>
+} @else {
+  <div class="tab-header">
+    @for (tab of tabs(); track tab.id) {
+      <button
+        [class.active]="activeTab() === tab.id"
+        (click)="setActiveTab(tab.id)"
+      >
+        {{ tab.title }}
+      </button>
+    }
+  </div>
+
+  <div class="tab-content">
+    @for (card of getActiveTabCards(); track card.id) {
+      {{ card.title }}
+    }
+  </div>
+}
