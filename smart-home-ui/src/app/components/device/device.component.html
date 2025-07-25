@@ -1,1 +1,16 @@
-<p>device works!</p>
+<div class="device">
+  <div class="title">
+    @if(layoutType != 'singleDevice'){
+      <div class="icon" [class.active]="toggler().state">
+        <i class="fa-solid {{ iconMapper.getIconClass(itemData.icon) }}" [class.active]="toggler().state"></i>
+      </div>
+    }
+
+    <div class="label">{{ itemData.label }}</div>
+  </div>
+  @if(layoutType != 'singleDevice'){
+    <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()"></app-toggle>
+  }
+
+
+</div>

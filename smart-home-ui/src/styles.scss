@@ -29,3 +29,15 @@ app-root {
   width: 100vw;
   overflow: hidden;
 }
+
+.icon {
+  cursor: pointer;
+}
+
+.icon i {
+  color: $grey-middle-color;
+}
+
+.icon.active i {
+  color: $primary-color;
+}

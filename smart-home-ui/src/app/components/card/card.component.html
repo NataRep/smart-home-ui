@@ -1,15 +1,26 @@
 <div class="card__container">
   <div class="card__header">
     <div class="title">{{ cardData.title}}</div>
-    @if (toggler()) {
+    @if (hasToggler()) {
       <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()">
       </app-toggle>
     }
+
+    @if(layout == "singleDevice" && cardData.items[0].type == 'device'){
+      <div class="icon {{ cardData.items[0].icon }}" [class.active]="toggler()?.state" (click)="onToggleChange()">
+        <i class="fa-solid {{ iconMapper.getIconClass(cardData.items[0].icon) }}" ></i>
+      </div>
+    }
   </div>
 
-  <div class="items__container">
+  <div class="items__container {{layout}}">    
     @for (item of cardData.items; track item.label) {
-      <div class="card__item">{{ item.label }}</div>
+      @if(item.type == 'device'){
+        <app-device [itemData]="item" [layoutType]="layout"></app-device>
+      }
+      @else{
+        <app-sensor [itemData]="item" [layoutType]="layout"></app-sensor>
+      }
     }
   </div>
 </div>

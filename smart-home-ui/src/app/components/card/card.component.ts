@@ -1,51 +1,37 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/common-models';
 import { Card } from '../../models/response-models';
+import { IconMapperService } from '../../services/icon-mapper.service';
+import { DeviceComponent } from '../device/device.component';
+import { SensorComponent } from '../sensor/sensor.component';
 import { ToggleComponent } from '../toggler/toggler.component';
-
-enum ITEM_TYPE {
-  DEVICE = 'device',
-  SENSOR = 'sensor',
-}
-
-enum CARD_LAYOUT {
-  VERTICAL = 'verticalLayout',
-  HORIZONTAL = 'horizontalLayout',
-  SINGLE = 'singleDevice',
-}
-
-type Toggler = {
-  state: boolean;
-};
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [ToggleComponent],
+  imports: [ToggleComponent, DeviceComponent, SensorComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
 export class CardComponent implements OnInit {
   @Input() cardData!: Card;
 
+  iconMapper = inject(IconMapperService);
+
   toggler = signal<Toggler | null>(null);
 
   layout: CARD_LAYOUT = CARD_LAYOUT.VERTICAL;
 
   ngOnInit() {
-    console.log('cardData', this.cardData);
+    const devices = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE);
+    const state = devices.some((item) => item.state);
+    this.toggler.set({ state });
 
-    if (this.hasToggler()) {
-      const devices = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE);
-      const state = devices.some((item) => item.state);
-      this.toggler.set({ state });
-    }
-
-    this.layout =
-      this.cardData.layout === CARD_LAYOUT.VERTICAL ? CARD_LAYOUT.VERTICAL : CARD_LAYOUT.HORIZONTAL;
+    this.layout = this.cardData.layout as CARD_LAYOUT;
   }
 
   hasToggler(): boolean {
-    return this.cardData.items.some((item) => item.type === ITEM_TYPE.DEVICE);
+    return this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE).length > 1;
   }
 
   onToggleChange() {
