@@ -16,3 +16,11 @@ $success-color: #4caf50;
     padding: 1rem;
   }
 }
+
+@mixin responsive-card-padding {
+  padding: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+  }
+}

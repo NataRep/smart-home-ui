@@ -1,3 +1,5 @@
-@for (card of cardsData; track card.id) {
+<div class="card-list">
+  @for (card of cardsData; track card.id) {
     <app-card [cardData]="card"></app-card>
-}
+  }
+</div>

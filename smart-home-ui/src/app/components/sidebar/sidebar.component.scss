@@ -2,6 +2,7 @@
 
 app-sidebar-menu {
   flex-grow: 1;
+  font-size: 0.875rem;
 
   @include responsive-container-padding;
 }
