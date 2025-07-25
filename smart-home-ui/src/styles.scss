@@ -9,17 +9,17 @@ body {
 
 a {
   text-decoration: none;
-  color: $primary-color;
+  color: $secondary-color;
   transition: color 0.25s;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      color: $secondary-color;
+      color: $primary-color;
     }
   }
 
   &:active {
-    color: $secondary-color;
+    color: $primary-color;
   }
 }
 

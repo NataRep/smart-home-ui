@@ -1,4 +1,3 @@
-<p>card-list works!</p>
 @for (card of cardsData; track card.id) {
-      {{ card.title }}
-    }
+    <app-card [cardData]="card"></app-card>
+}

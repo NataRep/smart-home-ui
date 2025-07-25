@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Card } from '../../models/response-models';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-card-list',
   standalone: true,
-  imports: [],
+  imports: [CardComponent],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.scss',
 })
