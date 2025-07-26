@@ -25,7 +25,7 @@ $success-color: #4caf50;
   }
 }
 
-@mixin base-item-styles {
+@mixin base-item-horizontal {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,6 +33,30 @@ $success-color: #4caf50;
   .title {
     display: flex;
     align-items: center;
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+@mixin base-item-vertical {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .title {
+    display: grid;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      width: 100%;
+      order: 2;
+    }
 
     i {
       margin-right: 0.5rem;

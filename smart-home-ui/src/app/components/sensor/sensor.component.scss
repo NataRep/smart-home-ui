@@ -1,5 +1,10 @@
 @use '../../../styles/variables' as *;
 
-.sensor {
-  @include base-item-styles;
+.sensor.verticalLayout,
+.singleDevice {
+  @include base-item-horizontal;
+}
+
+.sensor.horizontalLayout {
+  @include base-item-vertical;
 }

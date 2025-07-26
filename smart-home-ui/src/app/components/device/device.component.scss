@@ -1,5 +1,5 @@
 @use '../../../styles/variables' as *;
 
 .device {
-  @include base-item-styles;
+  @include base-item-horizontal;
 }
