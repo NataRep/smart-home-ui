@@ -8,7 +8,7 @@
 
     @if(layout == "singleDevice" && cardData.items[0].type == 'device'){
       <div class="icon {{ cardData.items[0].icon }}" [class.active]="toggler()?.state" (click)="onToggleChange()">
-        <i class="fa-solid {{ iconMapper.getIconClass(cardData.items[0].icon) }}" ></i>
+        <i class="fa-solid {{cardData.items[0].icon | iconMapper }}" ></i>
       </div>
     }
   </div>
@@ -16,7 +16,7 @@
   <div class="items__container {{layout}}">    
     @for (item of cardData.items; track item.label) {
       @if(item.type == 'device'){
-        <app-device [itemData]="item" [layoutType]="layout"></app-device>
+        <app-device [itemData]="item" [layoutType]="layout" ></app-device>
       }
       @else{
         <app-sensor [itemData]="item" [layoutType]="layout"></app-sensor>

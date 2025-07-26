@@ -2,7 +2,7 @@
   <div class="title">
     @if(layoutType != 'singleDevice'){
       <div class="icon" [class.active]="toggler().state">
-        <i class="fa-solid {{ iconMapper.getIconClass(itemData.icon) }}" [class.active]="toggler().state"></i>
+        <i class="fa-solid {{ itemData.icon | iconMapper}}" [class.active]="toggler().state"></i>
       </div>
     }
 

@@ -1,12 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Toggler } from '../../models/common-models';
+import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { BaseItemComponent } from '../base-item/base-item.component';
 import { ToggleComponent } from '../toggler/toggler.component';
 
 @Component({
   selector: 'app-device',
   standalone: true,
-  imports: [ToggleComponent],
+  imports: [ToggleComponent, IconMapperPipe],
   templateUrl: './device.component.html',
   styleUrl: './device.component.scss',
 })
