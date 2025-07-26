@@ -1,14 +1,5 @@
+@use '../../../styles/variables' as *;
+
 .device {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.title {
-  display: flex;
-  align-items: center;
-
-  i {
-    margin-right: 0.5rem;
-  }
+  @include base-item-styles;
 }

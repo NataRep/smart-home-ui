@@ -1,3 +1,9 @@
 <div class="sensor">
-  <p>{{itemData.label}}</p>
+  <div class="title">
+    <div class="icon">
+      <i class="fa-solid {{ itemData.icon | iconMapper}}"></i>
+    </div>
+    <div class="label">{{ itemData.label }}</div>
+  </div>
+  <div class="value">{{ itemData | sensorValue}}</div>
 </div>
