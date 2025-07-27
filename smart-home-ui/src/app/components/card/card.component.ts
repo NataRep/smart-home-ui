@@ -1,6 +1,6 @@
 import { Component, computed, Input, OnInit, signal } from '@angular/core';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/common-models';
-import { Card } from '../../models/response-models';
+import { Card, CardItem } from '../../models/response-models';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { DeviceComponent } from '../device/device.component';
 import { SensorComponent } from '../sensor/sensor.component';
@@ -18,14 +18,18 @@ export class CardComponent implements OnInit {
 
   toggler = signal<Toggler | null>(null);
 
-  childrenState = computed(this.getChildrenState.bind(this));
+  togglerState = computed(this.getTogglerState.bind(this));
 
   layout: CARD_LAYOUT = CARD_LAYOUT.VERTICAL;
+
+  devicesTogglerList: Toggler[] | [] = [];
 
   ngOnInit() {
     const devices = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE);
     const state = devices.some((item) => item.state);
     this.toggler.set({ state });
+
+    this.initDevicesTogglerList(devices);
 
     this.layout = this.cardData.layout as CARD_LAYOUT;
   }
@@ -41,7 +45,40 @@ export class CardComponent implements OnInit {
     });
   }
 
-  private getChildrenState(): boolean {
+  onDeviceToggled(index: number, newState: boolean) {
+    console.log(`Device ${index} toggled to ${newState}`);
+    this.devicesTogglerList[index] = { state: newState };
+
+    if (this.isAllDeviceOff()) {
+      this.toggler.update((current) => {
+        if (!current) return current;
+        return { ...current, state: false };
+      });
+    }
+
+    if (this.isAllDeviceOn()) {
+      this.toggler.update((current) => {
+        if (!current) return current;
+        return { ...current, state: true };
+      });
+    }
+  }
+
+  initDevicesTogglerList(devices: CardItem[]) {
+    this.devicesTogglerList = devices
+      .filter((item) => item.state !== undefined)
+      .map((item) => ({ state: Boolean(item.state) }));
+  }
+
+  isAllDeviceOff(): boolean {
+    return this.devicesTogglerList.every((toggler) => !toggler.state);
+  }
+
+  isAllDeviceOn(): boolean {
+    return this.devicesTogglerList.every((toggler) => toggler.state);
+  }
+
+  private getTogglerState(): boolean {
     return this.toggler()?.state ?? false;
   }
 }

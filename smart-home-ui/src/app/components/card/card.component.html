@@ -14,9 +14,14 @@
   </div>
 
   <div class="items__container {{layout}}">    
-    @for (item of cardData.items; track item.label) {
+    @for (item of cardData.items; track item.label; let i = $index) {
       @if(item.type == 'device'){
-        <app-device [itemData]="item" [layoutType]="layout" [parentState] = 'childrenState'></app-device>
+        <app-device 
+        [itemData]="item" 
+        [layoutType]="layout" 
+        [parentState] = 'togglerState'
+        (deviceToggled)="onDeviceToggled(i, $event)"
+        ></app-device>
       }
       @else{
         <app-sensor [itemData]="item" [layoutType]="layout"></app-sensor>
