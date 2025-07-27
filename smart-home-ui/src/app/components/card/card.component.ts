@@ -46,7 +46,6 @@ export class CardComponent implements OnInit {
   }
 
   onDeviceToggled(index: number, newState: boolean) {
-    console.log(`Device ${index} toggled to ${newState}`);
     this.devicesTogglerList[index] = { state: newState };
 
     if (this.isAllDeviceOff()) {

@@ -23,6 +23,5 @@ export class SidebarComponent {
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
-    console.log('this.isOpen', this.isOpen);
   }
 }
