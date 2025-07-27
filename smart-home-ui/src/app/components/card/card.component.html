@@ -16,7 +16,7 @@
   <div class="items__container {{layout}}">    
     @for (item of cardData.items; track item.label) {
       @if(item.type == 'device'){
-        <app-device [itemData]="item" [layoutType]="layout" ></app-device>
+        <app-device [itemData]="item" [layoutType]="layout" [parentState] = 'childrenState'></app-device>
       }
       @else{
         <app-sensor [itemData]="item" [layoutType]="layout"></app-sensor>
