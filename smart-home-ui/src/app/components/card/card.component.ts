@@ -1,4 +1,4 @@
-import { Component, computed, Input, OnInit, signal } from '@angular/core';
+import { AfterContentInit, Component, computed, Input, OnInit, signal } from '@angular/core';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/common-models';
 import { Card, CardItem } from '../../models/response-models';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
@@ -13,16 +13,14 @@ import { ToggleComponent } from '../toggler/toggler.component';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, AfterContentInit {
   @Input() cardData!: Card;
 
   toggler = signal<Toggler | null>(null);
-
   togglerState = computed(this.getTogglerState.bind(this));
-
-  layout: CARD_LAYOUT = CARD_LAYOUT.VERTICAL;
-
+  layout: string = CARD_LAYOUT.VERTICAL;
   devicesTogglerList: Toggler[] | [] = [];
+  isToggle: boolean = false;
 
   ngOnInit() {
     const devices = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE);
@@ -30,12 +28,11 @@ export class CardComponent implements OnInit {
     this.toggler.set({ state });
 
     this.initDevicesTogglerList(devices);
-
-    this.layout = this.cardData.layout as CARD_LAYOUT;
+    this.layout = this.cardData.layout;
   }
 
-  hasToggler(): boolean {
-    return this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE).length > 1;
+  ngAfterContentInit() {
+    this.isToggle = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE).length > 1;
   }
 
   onToggleChange() {

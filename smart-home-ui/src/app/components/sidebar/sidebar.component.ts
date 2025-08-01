@@ -1,4 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { APP_TITLE } from '../../models/main.constant';
 import { DeviceService } from '../../services/device.service';
 import { SidebarFooterComponent } from './sidebar-footer/sidebar-footer.component';
 import { SidebarHeaderComponent } from './sidebar-header/sidebar-header.component';
@@ -15,11 +16,11 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
   },
 })
 export class SidebarComponent {
-  @Input() title: string = '';
-
   private deviceService = inject(DeviceService);
   isMobile = this.deviceService.isMobile();
   isOpen: boolean = !this.isMobile;
+
+  title: string = APP_TITLE;
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;

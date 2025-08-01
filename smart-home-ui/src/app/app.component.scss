@@ -1,23 +1,10 @@
 @use '../styles/variables' as *;
 
-app-sidebar {
-  width: 4rem;
-  background-color: $background-color-secondary;
-  border-right: 1px solid $grey-color;
-  overflow: hidden;
-  transition: width 0.5s;
+:host {
   display: flex;
-  flex-direction: column;
   height: 100vh;
-  flex-shrink: 0;
-
-  &.sidebar--open {
-    width: 14rem;
-
-    @media (max-width: 980px) {
-      width: 100%;
-    }
-  }
+  width: 100vw;
+  overflow: hidden;
 }
 
 main {

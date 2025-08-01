@@ -1,4 +1,5 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Card, Tab } from '../../models/response-models';
 import { TabsService } from '../../services/cards.service';
 import { CardListComponent } from '../card-list/card-list.component';
@@ -10,11 +11,17 @@ import { CardListComponent } from '../card-list/card-list.component';
   templateUrl: './tab-switcher.component.html',
   styleUrl: './tab-switcher.component.scss',
 })
-export class TabSwitcherComponent implements OnInit {
+export class TabSwitcherComponent {
   private tabService = inject(TabsService);
+
   tabs = signal<Tab[]>([]);
   activeTabId = signal<string | null>(null);
   isLoading = signal(true);
+  activeTabCards = computed(this.getActiveTabCards.bind(this));
+
+  constructor() {
+    this.loadTabs();
+  }
 
   private getActiveTabCards(): Card[] {
     const activeId = this.activeTabId();
@@ -25,27 +32,24 @@ export class TabSwitcherComponent implements OnInit {
     return foundTab?.cards || [];
   }
 
-  activeTabCards = computed(this.getActiveTabCards.bind(this));
-
-  ngOnInit() {
-    this.loadTabs();
-  }
-
   loadTabs() {
     this.isLoading.set(true);
 
-    this.tabService.getTabs().subscribe({
-      next: (response) => {
-        this.tabs.set(response.tabs);
-        if (response.tabs.length > 0) {
-          this.activeTabId.set(response.tabs[0].id);
-        }
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.isLoading.set(false);
-      },
-    });
+    this.tabService
+      .getTabs()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (response) => {
+          this.tabs.set(response.tabs);
+          if (response.tabs.length > 0) {
+            this.activeTabId.set(response.tabs[0].id);
+          }
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
+        },
+      });
   }
 
   setActiveTab(tabId: string) {

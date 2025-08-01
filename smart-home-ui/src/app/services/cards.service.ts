@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { delay, of } from 'rxjs';
+import { delay, map, of } from 'rxjs';
 import { MOCK_DATA } from '../../assets/mock-data';
 import { ResponseTabs } from '../models/response-models';
 
@@ -16,6 +16,9 @@ export class TabsService {
   }
 
   getTabById(id: string) {
-    return of(this.mockTabs.tabs.find((tab) => tab.id === id)).pipe(delay(300));
+    return this.getTabs().pipe(
+      map((data) => data.tabs.find((tab) => tab.id === id)),
+      delay(300),
+    );
   }
 }

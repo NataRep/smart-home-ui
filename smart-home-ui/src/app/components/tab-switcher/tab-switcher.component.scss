@@ -1,5 +1,11 @@
 @use '../../../styles/variables' as *;
 
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .tab-header {
   width: 100%;
   height: 72px;

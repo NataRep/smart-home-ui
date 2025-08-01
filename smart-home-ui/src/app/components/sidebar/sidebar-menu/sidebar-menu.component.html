@@ -1,6 +1,6 @@
 <nav [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
   @for (link of linkList; track $index) {
-    <a routerLink="{{ link.path }}" routerLinkActive="active" [appActiveLink]="link.path">
+    <a routerLink="{{ link.path }}" routerLinkActive="active">
       <i class="fa-solid {{ link.icon }}"></i> {{ link.name }}</a
     >
   }

@@ -1,5 +1,5 @@
 <app-sidebar-header (toggleSidebar)="toggleSidebar()" [(isSidebarOpen)]="isOpen">
-  <ng-content></ng-content>
+  {{title}}
 </app-sidebar-header>
 <app-sidebar-menu [isSidebarOpen]="isOpen"></app-sidebar-menu>
 <app-sidebar-footer [isSidebarOpen]="isOpen"></app-sidebar-footer>

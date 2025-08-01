@@ -9,6 +9,4 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title: string = 'Smart Home UI';
-}
+export class AppComponent {}
