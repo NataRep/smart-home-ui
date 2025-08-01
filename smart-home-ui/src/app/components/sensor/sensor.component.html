@@ -1,4 +1,4 @@
-<div class="sensor {{layoutType}}">
+<div [ngClass]="['sensor', (layoutType || '')]">
   <div class="title">
     <div class="icon">
       <i class="fa-solid {{ itemData.icon | iconMapper}}"></i>

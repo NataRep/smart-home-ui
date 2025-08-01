@@ -19,17 +19,3 @@
     }
   }
 }
-
-app-sidebar-menu {
-  flex-grow: 1;
-  font-size: 0.875rem;
-
-  @include responsive-container-padding;
-}
-
-app-sidebar-footer {
-  line-height: 1rem;
-  border-top: solid 1px $grey-color;
-
-  @include responsive-container-padding;
-}

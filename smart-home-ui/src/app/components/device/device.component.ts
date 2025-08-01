@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   effect,
@@ -16,7 +17,7 @@ import { ToggleComponent } from '../toggler/toggler.component';
 @Component({
   selector: 'app-device',
   standalone: true,
-  imports: [ToggleComponent, IconMapperPipe],
+  imports: [ToggleComponent, IconMapperPipe, NgClass],
   templateUrl: './device.component.html',
   styleUrl: './device.component.scss',
 })
