@@ -27,3 +27,12 @@ export interface Tab {
 export interface ResponseTabs {
   tabs: Tab[];
 }
+
+export interface User {
+  fullName: string;
+  initials: string;
+}
+
+export interface LoginResponse {
+  token: string
+}
