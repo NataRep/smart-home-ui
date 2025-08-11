@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-footer',
@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   imports: [],
   templateUrl: './sidebar-footer.component.html',
   styleUrl: './sidebar-footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarFooterComponent {
   @Input() isSidebarOpen: boolean = false;

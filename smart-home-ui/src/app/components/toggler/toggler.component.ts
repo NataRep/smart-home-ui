@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 type Toggler = {
   state: boolean;
@@ -11,6 +11,7 @@ type Toggler = {
   imports: [CommonModule],
   templateUrl: './toggler.component.html',
   styleUrl: './toggler.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToggleComponent {
   @Input() toggler!: Toggler;

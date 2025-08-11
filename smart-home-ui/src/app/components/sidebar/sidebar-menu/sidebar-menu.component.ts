@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MENU_LINKS } from '../../../models/main.constant';
 
@@ -9,6 +9,7 @@ import { MENU_LINKS } from '../../../models/main.constant';
   imports: [RouterModule, NgClass],
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarMenuComponent {
   @Input() isSidebarOpen: boolean = false;

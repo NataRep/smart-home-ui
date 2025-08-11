@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   effect,
   EventEmitter,
@@ -20,6 +21,7 @@ import { ToggleComponent } from '../toggler/toggler.component';
   imports: [ToggleComponent, IconMapperPipe, NgClass],
   templateUrl: './device.component.html',
   styleUrl: './device.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeviceComponent extends BaseItemComponent implements OnInit {
   @Input() parentState!: Signal<boolean>;

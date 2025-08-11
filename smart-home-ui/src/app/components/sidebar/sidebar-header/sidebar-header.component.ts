@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-header',
@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   imports: [NgClass],
   templateUrl: './sidebar-header.component.html',
   styleUrl: './sidebar-header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarHeaderComponent {
   @Input() title: string = '';

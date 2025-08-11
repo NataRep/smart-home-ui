@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { APP_TITLE } from '../../models/main.constant';
 import { DeviceService } from '../../services/device.service';
 import { SidebarFooterComponent } from './sidebar-footer/sidebar-footer.component';
@@ -11,6 +11,7 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
   imports: [SidebarHeaderComponent, SidebarMenuComponent, SidebarFooterComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.sidebar--open]': 'isOpen',
   },

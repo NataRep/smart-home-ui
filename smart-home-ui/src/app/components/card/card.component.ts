@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, computed, Input, OnInit, signal } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, computed, Input, OnInit, signal } from '@angular/core';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/common-models';
 import { Card, CardItem } from '../../models/response-models';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
@@ -12,6 +12,7 @@ import { ToggleComponent } from '../toggler/toggler.component';
   imports: [ToggleComponent, DeviceComponent, SensorComponent, IconMapperPipe],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent implements OnInit, AfterContentInit {
   @Input() cardData!: Card;

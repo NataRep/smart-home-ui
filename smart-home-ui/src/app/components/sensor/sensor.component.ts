@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { SensorValuePipe } from '../../pipes/sensor-value.pipe';
 import { BaseItemComponent } from '../base-item/base-item.component';
@@ -10,5 +10,6 @@ import { BaseItemComponent } from '../base-item/base-item.component';
   imports: [IconMapperPipe, SensorValuePipe, NgClass],
   templateUrl: './sensor.component.html',
   styleUrl: './sensor.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SensorComponent extends BaseItemComponent {}
+export class SensorComponent extends BaseItemComponent { }

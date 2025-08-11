@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Card, Tab } from '../../models/response-models';
 import { TabsService } from '../../services/cards.service';
@@ -10,6 +10,7 @@ import { CardListComponent } from '../card-list/card-list.component';
   imports: [CardListComponent],
   templateUrl: './tab-switcher.component.html',
   styleUrl: './tab-switcher.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabSwitcherComponent {
   private tabService = inject(TabsService);

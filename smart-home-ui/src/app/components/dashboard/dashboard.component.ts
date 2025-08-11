@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
 
 @Component({
@@ -7,5 +7,6 @@ import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
   imports: [TabSwitcherComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {}
+export class DashboardComponent { }

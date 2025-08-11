@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CardItem } from '../../models/response-models';
 
 @Component({
@@ -6,6 +6,7 @@ import { CardItem } from '../../models/response-models';
   standalone: true,
   imports: [],
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseItemComponent {
   @Input() itemData!: CardItem;
