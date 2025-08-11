@@ -21,7 +21,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<User> {
     const data = { username, password };
-    const url = '/api/login'
+    const url = 'login'
 
     const observable = this.http.post<LoginResponse>(url, data).pipe(
       tap(response => {
@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   loadProfile(): Observable<User> {
-    const url = '/api/user/profile'
+    const url = 'user/profile'
     const observable = this.http.get<User>(url).pipe(
       tap((userData) => {
         this._isAuthenticated.next(true);
