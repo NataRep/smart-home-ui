@@ -1,3 +1,5 @@
+@use '../../../../styles/variables' as *;
+
 :host {
   line-height: 1rem;
   border-top: solid 1px $grey-color;

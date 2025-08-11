@@ -9,7 +9,7 @@ import { ResponseTabs } from '../models/response-models';
 export class TabsService {
   private mockTabs: ResponseTabs = MOCK_DATA;
 
-  constructor() {}
+  constructor() { }
 
   getTabs() {
     return of(this.mockTabs).pipe(delay(800));
