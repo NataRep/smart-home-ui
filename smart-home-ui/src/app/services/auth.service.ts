@@ -20,8 +20,8 @@ export class AuthService {
   constructor() { }
 
   login(username: string, password: string): Observable<User> {
-    const data = { username, password };
-    const url = 'login'
+    const data = { userName: username, password };
+    const url = 'user/login'
 
     const observable = this.http.post<LoginResponse>(url, data).pipe(
       tap(response => {
