@@ -8,60 +8,50 @@ import { TokenStorageService } from './token-storage.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private http = inject(HttpClient)
-  private tokenService = inject(TokenStorageService)
+  private http = inject(HttpClient);
+  private tokenService = inject(TokenStorageService);
 
-  private _isAuthenticated = new BehaviorSubject<boolean>(false)
-  private _currentUser = new BehaviorSubject<User | null>(null)
+  private _isAuthenticated = new BehaviorSubject<boolean>(false);
+  private _currentUser = new BehaviorSubject<User | null>(null);
 
   isAuthenticated$ = this._isAuthenticated.asObservable();
   currentUser$ = this._currentUser.asObservable();
 
-  constructor() { }
+  constructor() {
+    // Проверяем токен при инициализации сервиса
+    if (this.tokenService.getToken()) {
+      this.loadProfile().subscribe();
+    }
+  }
 
   login(username: string, password: string): Observable<User> {
-    const data = { userName: username, password };
-    const url = 'user/login'
-
-    const observable = this.http.post<LoginResponse>(url, data).pipe(
+    return this.http.post<LoginResponse>('user/login', { userName: username, password }).pipe(
       tap(response => {
-        if (response.token) {
-          this.tokenService.saveToken(response.token)
-        } else {
-          throw new Error('Ошибка получения токена')
-        }
+        if (!response.token) throw new Error('Ошибка получения токена');
+        this.tokenService.saveToken(response.token);
       }),
       switchMap(() => this.loadProfile()),
-      catchError(error => {
-        return throwError(() => new Error(`Ошибка авторизации: ${error}`));
-      })
-
+      catchError(error => throwError(() => error))
     );
-
-    return observable;
   }
 
   loadProfile(): Observable<User> {
-    const url = 'user/profile'
-    const observable = this.http.get<User>(url).pipe(
-      tap((userData) => {
+    return this.http.get<User>('user/profile').pipe(
+      tap(user => {
         this._isAuthenticated.next(true);
-        this._currentUser.next(userData)
+        this._currentUser.next(user);
       }),
       catchError(error => {
         this._isAuthenticated.next(false);
-        this._currentUser.next(null)
-        return throwError(() => new Error(`Ошибка получения данных пользователя: ${error}`));
+        this._currentUser.next(null);
+        return throwError(() => error);
       })
-    )
-
-    return observable;
+    );
   }
 
   logout() {
     this._isAuthenticated.next(false);
-    this._currentUser.next(null)
-    this.tokenService.clearToken()
+    this._currentUser.next(null);
+    this.tokenService.clearToken();
   }
-
 }

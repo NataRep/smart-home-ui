@@ -6,22 +6,30 @@ import { TokenStorageService } from "../services/token-storage.service";
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenStorageService);
-  const router = inject(Router)
+  const router = inject(Router);
+
+  if (req.url.includes('/login') || req.url.includes('/about')) {
+    return next(req);
+  }
 
   const token = tokenService.getToken();
-  const requestToHandle = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  if (!token) {
+    return next(req);
+  }
 
-  return next(requestToHandle).pipe(
+  const authReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         tokenService.clearToken();
-        router.navigate(['/login'])
+        router.navigate(['login']);
       }
-      return throwError(() => error)
+      return throwError(() => error);
     })
-
-  )
-}
+  );
+};
