@@ -15,7 +15,11 @@
   </div>
   <div class="form__input-wrap">
     <label class="form__label" for="password">Password</label>
-    <input type="password" id="password" formControlName="password" placeholder="******">
+    <input [type]="isPasswordVisible ? 'text' : 'password'" id="password" formControlName="password"
+      placeholder="******">
+    <div class="password__icon" (click)="togglePasswordVisibility()">
+     <i class="fas" [ngClass]="isPasswordVisible ?  'fa-eye' :  'fa-eye-slash'"></i>
+    </div>
     @if(password.invalid && (password.dirty || password.touched)){
     <div class="form__error">
       @if(password.errors?.['required']){
@@ -27,9 +31,9 @@
     }
   </div>
   @if (errorMessage){
-    <div class="form__error-global">
-      {{ errorMessage }}
-    </div>
+  <div class="form__error-global">
+    {{ errorMessage }}
+  </div>
   }
   <button type="submit" [disabled]="isLoading">Log in</button>
 </form>
