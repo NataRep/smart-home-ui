@@ -1,7 +1,19 @@
-<a href="https://github.com/NataRep" target="_blank" rel="noopener noreferrer">
-  @if (isSidebarOpen) {
-    NataRep 2025
-  } @else {
-    NR
-  }
-</a>
+@if(authService.currentUser$ | async; as currentUser) {
+  <div class="tools">
+    <div class="user">
+      <div class="user__initials">{{ currentUser.initials || '' }}</div>
+      @if(isSidebarOpen){
+        <div class="user__fullname">{{ currentUser.fullName || '' }}</div>
+      }
+    </div>
+    <button (click)="onLogout()">
+      {{ isSidebarOpen ? "Logout" : '' }}
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+  </div>  
+  <div class="copyright">
+    <a href="https://github.com/NataRep" target="_blank" rel="noopener noreferrer">
+      {{ isSidebarOpen ? 'NataRep 2025' : 'NR' }}
+    </a>
+  </div>
+}

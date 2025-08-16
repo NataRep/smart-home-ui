@@ -1,5 +1,9 @@
-<app-sidebar-header (toggleSidebar)="toggleSidebar()" [(isSidebarOpen)]="isOpen">
-  {{title}}
-</app-sidebar-header>
-<app-sidebar-menu [isSidebarOpen]="isOpen"></app-sidebar-menu>
-<app-sidebar-footer [isSidebarOpen]="isOpen"></app-sidebar-footer>
+@if(authService.isAuthenticated$ | async){
+<div class="sidebar" [class.sidebar--open] = 'isOpen'>
+  <app-sidebar-header (toggleSidebar)="toggleSidebar()" [(isSidebarOpen)]="isOpen">
+    {{title}}
+  </app-sidebar-header>
+  <app-sidebar-menu [isSidebarOpen]="isOpen"></app-sidebar-menu>
+  <app-sidebar-footer [isSidebarOpen]="isOpen"></app-sidebar-footer>
+</div>
+}
