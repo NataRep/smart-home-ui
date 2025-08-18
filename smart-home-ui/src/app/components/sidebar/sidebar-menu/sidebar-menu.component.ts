@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MENU_LINKS } from '../../../models/main.constant';
+import { MENU_LINKS } from '../../../models/constants';
 
 @Component({
   selector: 'app-sidebar-menu',

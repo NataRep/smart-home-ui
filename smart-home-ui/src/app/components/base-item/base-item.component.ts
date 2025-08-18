@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CardItem } from '../../models/response-models';
+import { CardItem } from '../../models/api.model';
 
 @Component({
   selector: 'app-base-item',

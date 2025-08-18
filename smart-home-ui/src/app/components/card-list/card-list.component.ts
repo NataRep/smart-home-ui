@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Card } from '../../models/response-models';
+import { Card } from '../../models/api.model';
 import { CardComponent } from '../card/card.component';
 
 @Component({

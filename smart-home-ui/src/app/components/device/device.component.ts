@@ -10,7 +10,7 @@ import {
   Signal,
   signal,
 } from '@angular/core';
-import { Toggler } from '../../models/common-models';
+import { Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { BaseItemComponent } from '../base-item/base-item.component';
 import { ToggleComponent } from '../toggler/toggler.component';

@@ -1,6 +1,6 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, computed, Input, OnInit, signal } from '@angular/core';
-import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/common-models';
-import { Card, CardItem } from '../../models/response-models';
+import { Card, CardItem } from '../../models/api.model';
+import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { DeviceComponent } from '../device/device.component';
 import { SensorComponent } from '../sensor/sensor.component';

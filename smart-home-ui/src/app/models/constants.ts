@@ -2,7 +2,7 @@ export const APP_TITLE = 'Smart Home UI';
 
 export const MENU_LINKS = [
   {
-    name: 'Dashboard',
+    name: 'Overview',
     path: '/dashboard',
     icon: 'fa-tachometer-alt',
   },

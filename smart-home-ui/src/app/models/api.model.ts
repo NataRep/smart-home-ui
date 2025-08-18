@@ -1,3 +1,5 @@
+import { ITEM_TYPE } from "./enums";
+
 export interface CardValue {
   amount: number;
   unit: string;
@@ -24,7 +26,7 @@ export interface Tab {
   cards: Card[];
 }
 
-export interface ResponseTabs {
+export interface DashboardTabs {
   tabs: Tab[];
 }
 
@@ -35,4 +37,18 @@ export interface User {
 
 export interface LoginResponse {
   token: string
+}
+
+export interface Dashboard {
+  id: string,
+  title: string,
+  icon: string
+}
+
+export interface Device {
+  id: string,
+  type: ITEM_TYPE,
+  icon: string,
+  label: string,
+  state: boolean
 }

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CardItem } from '../models/response-models';
+import { CardItem } from '../models/api.model';
 
 @Pipe({
   name: 'sensorValue',

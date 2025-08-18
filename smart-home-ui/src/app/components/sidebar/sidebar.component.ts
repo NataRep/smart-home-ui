@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { APP_TITLE } from '../../models/main.constant';
+import { APP_TITLE } from '../../models/constants';
 import { AuthService } from '../../services/auth.service';
 import { DeviceService } from '../../services/device.service';
 import { SidebarFooterComponent } from './sidebar-footer/sidebar-footer.component';

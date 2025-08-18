@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
-import { LoginResponse, User } from '../models/response-models';
+import { LoginResponse, User } from '../models/api.model';
 import { TokenStorageService } from './token-storage.service';
 
 @Injectable({

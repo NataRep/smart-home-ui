@@ -29,6 +29,8 @@ export class LoginComponent {
     this.form.valueChanges.subscribe(() => {
       this.errorMessage = null;
     });
+
+    console.log('User: Warner', "Pass: ea")
   }
 
   get name() { return this.form.get('name')!; }
