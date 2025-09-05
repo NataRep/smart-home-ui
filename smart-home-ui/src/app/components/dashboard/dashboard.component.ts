@@ -27,15 +27,16 @@ export class DashboardComponent {
   activeTabCards = computed(this.getActiveTabCards.bind(this));
 
   constructor() {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     this.route.paramMap.subscribe(paramMap => {
       const dashboardId = paramMap.get('dashboardId');
       const tabId = paramMap.get('tabId');
 
       this.dashboardId.set(dashboardId);
       this.activeTabId.set(tabId);
+      this.loadTabs();
     });
 
-    this.loadTabs();
   }
 
   private getActiveTabCards(): Card[] {
@@ -51,19 +52,20 @@ export class DashboardComponent {
   }
 
   loadTabs() {
-    this.isLoading.set(true);
-
     const id = this.dashboardId();
     const tabId = this.activeTabId();
     if (!id || !tabId) return;
 
+    this.isLoading.set(true);
     this.dashboardService.getDashboardTabs(id)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap(response => {
           this.tabs.set(response.tabs);
-          this.activeTabId.set(tabId);
-          this.isLoading.set(false);
+          if (!response.tabs.find(tab => tab.id === tabId)) {
+            // если tabId не найден, ставим первый
+            this.activeTabId.set(response.tabs[0]?.id ?? null);
+          }
         }),
         finalize(() => this.isLoading.set(false))
       )

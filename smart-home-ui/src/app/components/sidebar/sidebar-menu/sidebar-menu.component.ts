@@ -47,11 +47,16 @@ export class SidebarMenuComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const snapshot = this.route.snapshot.firstChild;
-        if (snapshot) {
-          this.activeDashboardId.set(snapshot.paramMap.get('dashboardId'));
-          this.activeDashboardTabId.set(snapshot.firstChild?.paramMap.get('tabId') ?? null);
+        let snapshot = this.route.snapshot;
+        while (snapshot.firstChild) {
+          snapshot = snapshot.firstChild;
         }
+
+        const dashboardId = snapshot.paramMap.get('dashboardId');
+        const tabId = snapshot.paramMap.get('tabId');
+
+        this.activeDashboardId.set(dashboardId);
+        this.activeDashboardTabId.set(tabId);
       });
   }
 

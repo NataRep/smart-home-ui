@@ -1,10 +1,15 @@
 <nav [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
   @for (dashboard of dashboards(); track dashboard.id) {
-    <a [class.active]="activeDashboardId() === dashboard.id" (click)="onClickDashboard(dashboard.id)">
-      <i [ngClass]="['fa-solid', dashboard.icon]" ></i> {{ dashboard.title }}</a>
-   }
-   @for (link of linkList; track link.id) {
+    <a
+      [class.active]="activeDashboardId() === dashboard.id"
+      (click)="onClickDashboard(dashboard.id)"
+    >
+      <i [ngClass]="['fa-solid', dashboard.icon]"></i> {{ dashboard.title }}
+    </a>
+  }
+  @for (link of linkList; track link.id) {
     <a [routerLink]="[link.id]" routerLinkActive="active">
-      <i [ngClass]="['fa-solid', link.icon]" ></i> {{ link.title }}</a>
-   }
+      <i [ngClass]="['fa-solid', link.icon]"></i> {{ link.title }}</a
+    >
+  }
 </nav>
