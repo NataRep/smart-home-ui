@@ -5,12 +5,13 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/ro
 import { filter, finalize, tap } from 'rxjs';
 import { Dashboard, Tab } from '../../../models/api.model';
 import { MENU_LINKS } from '../../../models/constants';
+import { IconMapperPipe } from '../../../pipes/icon-mapper.pipe';
 import { DashboardService } from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-sidebar-menu',
   standalone: true,
-  imports: [RouterModule, NgClass],
+  imports: [RouterModule, NgClass, IconMapperPipe],
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
