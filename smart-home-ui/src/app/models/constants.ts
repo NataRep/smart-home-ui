@@ -1,14 +1,10 @@
+
 export const APP_TITLE = 'Smart Home UI';
 
 export const MENU_LINKS = [
   {
-    name: 'Overview',
-    path: '/dashboard',
-    icon: 'fa-tachometer-alt',
-  },
-  {
-    name: 'About',
-    path: '/about',
+    title: 'About',
+    id: 'about',
     icon: 'fa-info-circle',
   },
 ];

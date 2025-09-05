@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
 import { Card, Tab } from '../../models/api.model';
 import { DashboardService } from '../../services/dashboard.service';
@@ -16,11 +16,9 @@ import { CardListComponent } from '../card-list/card-list.component';
 })
 export class DashboardComponent {
   private route = inject(ActivatedRoute)
+  private router = inject(Router)
   private dashboardService = inject(DashboardService);
-
-  private params = toSignal(this.route.paramMap);
-  //TODO
-  // здесь нужно брать изURL параметры и смотреть какой дашборд и какую его вкладку показывать
+  private destroyRef = inject(DestroyRef);
 
   tabs = signal<Tab[]>([]);
   isLoading = signal(true);
@@ -29,28 +27,26 @@ export class DashboardComponent {
   activeTabCards = computed(this.getActiveTabCards.bind(this));
 
   constructor() {
-
-    // Подписка на изменения параметров маршрута
     this.route.paramMap.subscribe(paramMap => {
       const dashboardId = paramMap.get('dashboardId');
       const tabId = paramMap.get('tabId');
 
       this.dashboardId.set(dashboardId);
       this.activeTabId.set(tabId);
-
-      console.log('DashboardId:', dashboardId, 'TabId:', tabId);
     });
 
     this.loadTabs();
-
   }
 
   private getActiveTabCards(): Card[] {
     const activeId = this.activeTabId();
+
     if (!activeId) return [];
+
     const foundTab = this.tabs().find(function (tab) {
       return tab.id === activeId;
     });
+
     return foundTab?.cards || [];
   }
 
@@ -63,7 +59,7 @@ export class DashboardComponent {
 
     this.dashboardService.getDashboardTabs(id)
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         tap(response => {
           this.tabs.set(response.tabs);
           this.activeTabId.set(tabId);
@@ -74,12 +70,7 @@ export class DashboardComponent {
       .subscribe();
   }
 
-  setActiveTab(tabId: string) {
-    const isValidId = this.tabs().some(function (tab) {
-      return tab.id === tabId;
-    })
-    if (isValidId) {
-      this.activeTabId.set(tabId);
-    }
+  onTabButton(tabId: string) {
+    this.router.navigate([`dashboard`, this.dashboardId(), tabId]);
   }
 }

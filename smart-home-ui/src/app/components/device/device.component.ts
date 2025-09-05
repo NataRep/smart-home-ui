@@ -27,9 +27,10 @@ export class DeviceComponent extends BaseItemComponent implements OnInit {
   @Input() parentState!: Signal<boolean>;
   @Output() deviceToggled = new EventEmitter<boolean>();
 
+  // всегда инициализируем дефолтным объектом
   toggler = signal<Toggler>({ state: false });
 
-  isInitialized = false;
+  private isInitialized = false;
 
   constructor() {
     super();
@@ -49,27 +50,20 @@ export class DeviceComponent extends BaseItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.itemData.state) {
+    if (this.itemData.state !== undefined) {
       this.toggler.set({ state: this.itemData.state });
     }
   }
 
   onToggleChange() {
     this.toggler.update((current) => {
-      if (!current) return current;
-
       const newState = !current.state;
-
       this.deviceToggled.emit(newState);
-
       return { ...current, state: newState };
     });
   }
 
   private handleParentStateChange(currentState: boolean): void {
-    this.toggler.update((current) => {
-      if (!current) return current;
-      return { ...current, state: currentState };
-    });
+    this.toggler.update((current) => ({ ...current, state: currentState }));
   }
 }

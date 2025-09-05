@@ -6,7 +6,7 @@
     @for (tab of tabs(); track tab.id) {
       <button
         [class.active]="activeTabId() === tab.id"
-        (click)="setActiveTab(tab.id)"
+        (click)="onTabButton(tab.id)"
       >
         {{ tab.title }}
       </button>

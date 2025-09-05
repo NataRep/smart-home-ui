@@ -1,5 +1,5 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, computed, Input, OnInit, signal } from '@angular/core';
-import { Card, CardItem } from '../../models/api.model';
+import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Card } from '../../models/api.model';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { DeviceComponent } from '../device/device.component';
@@ -17,18 +17,18 @@ import { ToggleComponent } from '../toggler/toggler.component';
 export class CardComponent implements OnInit, AfterContentInit {
   @Input() cardData!: Card;
 
-  toggler = signal<Toggler | null>(null);
-  togglerState = computed(this.getTogglerState.bind(this));
   layout: string = CARD_LAYOUT.VERTICAL;
-  devicesTogglerList: Toggler[] | [] = [];
   isToggle: boolean = false;
+
+  toggler = signal<Toggler | null>(null);
+
+  deviceSignals: WritableSignal<boolean>[] = [];
 
   ngOnInit() {
     const devices = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE);
-    const state = devices.some((item) => item.state);
-    this.toggler.set({ state });
-
-    this.initDevicesTogglerList(devices);
+    const hasAnyOn = devices.some((item) => item.state);
+    this.toggler.set({ state: hasAnyOn });
+    this.deviceSignals = devices.map((item) => signal(Boolean(item.state)));
     this.layout = this.cardData.layout;
   }
 
@@ -39,43 +39,32 @@ export class CardComponent implements OnInit, AfterContentInit {
   onToggleChange() {
     this.toggler.update((current) => {
       if (!current) return current;
-      return { ...current, state: !current.state };
+      const newState = !current.state;
+
+      for (const sig of this.deviceSignals) sig.set(newState);
+
+      return { ...current, state: newState };
     });
   }
 
   onDeviceToggled(index: number, newState: boolean) {
-    this.devicesTogglerList[index] = { state: newState };
+    this.deviceSignals[index].set(newState);
+    this.syncParentToggle();
+  }
 
+  private syncParentToggle() {
     if (this.isAllDeviceOff()) {
-      this.toggler.update((current) => {
-        if (!current) return current;
-        return { ...current, state: false };
-      });
-    }
-
-    if (this.isAllDeviceOn()) {
-      this.toggler.update((current) => {
-        if (!current) return current;
-        return { ...current, state: true };
-      });
+      this.toggler.set({ state: false });
+    } else if (this.isSomeDeviceOn()) {
+      this.toggler.set({ state: true });
     }
   }
 
-  initDevicesTogglerList(devices: CardItem[]) {
-    this.devicesTogglerList = devices
-      .filter((item) => item.state !== undefined)
-      .map((item) => ({ state: Boolean(item.state) }));
+  private isAllDeviceOff(): boolean {
+    return this.deviceSignals.every((sig) => sig() === false);
   }
 
-  isAllDeviceOff(): boolean {
-    return this.devicesTogglerList.every((toggler) => !toggler.state);
-  }
-
-  isAllDeviceOn(): boolean {
-    return this.devicesTogglerList.every((toggler) => toggler.state);
-  }
-
-  private getTogglerState(): boolean {
-    return this.toggler()?.state ?? false;
+  private isSomeDeviceOn(): boolean {
+    return this.deviceSignals.some((sig) => sig() === true);
   }
 }

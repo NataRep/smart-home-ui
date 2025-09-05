@@ -1,29 +1,33 @@
 <div class="card__container">
   <div class="card__header">
-    <div class="title">{{ cardData.title}}</div>
+    <div class="title">{{ cardData.title }}</div>
+
     @if (isToggle) {
-      <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()">
-      </app-toggle>
+      <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()"> </app-toggle>
     }
 
-    @if(layout === 'CARD_LAYOUT.SINGLE' && cardData.items[0].type === 'ITEM_TYPE.DEVICE'){
-      <div class="icon {{ cardData.items[0].icon }}" [class.active]="toggler()?.state" (click)="onToggleChange()">
-        <i class="fa-solid {{cardData.items[0].icon | iconMapper }}" ></i>
+    @if (layout === 'CARD_LAYOUT.SINGLE' && cardData.items[0].type === 'ITEM_TYPE.DEVICE') {
+      <div
+        class="icon {{ cardData.items[0].icon }}"
+        [class.active]="toggler()?.state"
+        (click)="onToggleChange()"
+      >
+        <i class="fa-solid {{ cardData.items[0].icon | iconMapper }}"></i>
       </div>
     }
   </div>
 
-  <div class="items__container {{layout}}">    
+  <div class="items__container {{ layout }}">
     @for (item of cardData.items; track item.label; let i = $index) {
-      @if(item.type == 'device'){
-        <app-device 
-        [itemData]="item" 
-        [layoutType]="layout" 
-        [parentState] = 'togglerState'
-        (deviceToggled)="onDeviceToggled(i, $event)"
-        ></app-device>
-      }
-      @else{
+      @if (item.type == 'device') {
+        <app-device
+          [itemData]="item"
+          [layoutType]="layout"
+          [parentState]="deviceSignals[i]"
+          (deviceToggled)="onDeviceToggled(i, $event)"
+        >
+        </app-device>
+      } @else {
         <app-sensor [itemData]="item" [layoutType]="layout"></app-sensor>
       }
     }

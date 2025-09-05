@@ -1,14 +1,13 @@
-<div [ngClass]="['device', (layoutType || '')]">
+<div [ngClass]="['device', layoutType || '']">
   <div class="title">
-    @if(layoutType != 'CARD_LAYOUT.SINGLE'){
+    @if (layoutType != 'CARD_LAYOUT.SINGLE') {
       <div class="icon" [class.active]="toggler().state">
-        <i class="fa-solid {{ itemData.icon | iconMapper}}" [class.active]="toggler().state"></i>
+        <i class="fa-solid {{ itemData.icon | iconMapper }}" [class.active]="toggler().state"></i>
       </div>
     }
-
     <div class="label">{{ itemData.label }}</div>
   </div>
-  @if(layoutType != 'CARD_LAYOUT.SINGLE'){
-    <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()"></app-toggle>
+  @if (layoutType != 'CARD_LAYOUT.SINGLE') {
+    <app-toggle [toggler]="toggler()" (toggleChange)="onToggleChange()"></app-toggle>
   }
 </div>
