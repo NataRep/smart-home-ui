@@ -16,14 +16,33 @@
 
 .desk {
   display: flex;
+  align-items: center;
 }
 
 .image {
   width: 400px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   margin-right: 2rem;
+  background-image: url('/assets/images/raccoon.png');
+  background-position: -400px center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation:
+    blink 0.5s steps(2),
+    blink 0.75s steps(2) 1 5s,
+    blink 0.35s steps(2) 1 7s,
+    blink 0.5s steps(2) 1 10s,
+    blink 0.25s steps(2) 2 25s,
+    blink 0.35s steps(2) 2 120s;
+}
 
-  img {
-    width: 100%;
+@keyframes blink {
+  0% {
+    background-position: -400px center;
+  }
+  100% {
+    background-position: 400px center;
   }
 }
 
@@ -42,15 +61,8 @@ h1 {
   }
 
   .image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 0;
-    width: 100%;
-
-    img {
-      width: 80%;
-    }
+    margin: auto 0;
+    width: 80%;
   }
 
   .text {
