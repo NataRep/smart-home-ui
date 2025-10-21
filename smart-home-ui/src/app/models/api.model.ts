@@ -11,6 +11,7 @@ export interface CardItem {
   label: string;
   value?: CardValue;
   state?: boolean;
+  id: string;
 }
 
 export interface Card {

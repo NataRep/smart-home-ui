@@ -1,7 +1,10 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, DestroyRef, inject, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize, forkJoin, tap } from 'rxjs';
 import { Card } from '../../models/api.model';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
+import { DashboardService } from '../../services/dashboard.service';
 import { DeviceComponent } from '../device/device.component';
 import { SensorComponent } from '../sensor/sensor.component';
 import { ToggleComponent } from '../toggler/toggler.component';
@@ -16,6 +19,10 @@ import { ToggleComponent } from '../toggler/toggler.component';
 })
 export class CardComponent implements OnInit, AfterContentInit {
   @Input() cardData!: Card;
+
+  private dashboardService = inject(DashboardService);
+  private destroyRef = inject(DestroyRef);
+  isLoading = signal(false);
 
   layout: string = CARD_LAYOUT.VERTICAL;
   isToggle: boolean = false;
@@ -37,19 +44,35 @@ export class CardComponent implements OnInit, AfterContentInit {
   }
 
   onToggleChange() {
-    this.toggler.update((current) => {
-      if (!current) return current;
-      const newState = !current.state;
+    const newState = !this.toggler()!.state;
+    const deviceRequests = this.cardData.items
+      .filter(i => i.type === ITEM_TYPE.DEVICE)
+      .map(item => this.dashboardService.changeStateDeviceById(item.id, newState));
 
-      for (const sig of this.deviceSignals) sig.set(newState);
+    this.isLoading.set(true);
 
-      return { ...current, state: newState };
-    });
+    forkJoin(deviceRequests)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe(responses => {
+        for (const [i, resp] of responses.entries()) this.deviceSignals[i].set(resp.state);
+        this.toggler.set({ state: newState });
+      });
   }
 
   onDeviceToggled(index: number, newState: boolean) {
-    this.deviceSignals[index].set(newState);
-    this.syncParentToggle();
+    const id = this.cardData.items[index].id;
+    this.isLoading.set(true);
+
+    this.dashboardService.changeStateDeviceById(id, newState)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(response => {
+          this.deviceSignals[index].set(response.state);
+          this.syncParentToggle();
+        }),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe();
   }
 
   private syncParentToggle() {

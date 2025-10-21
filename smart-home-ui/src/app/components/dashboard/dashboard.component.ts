@@ -27,7 +27,6 @@ export class DashboardComponent {
   activeTabCards = computed(this.getActiveTabCards.bind(this));
 
   constructor() {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     this.route.paramMap.subscribe(paramMap => {
       const dashboardId = paramMap.get('dashboardId');
       const tabId = paramMap.get('tabId');
@@ -62,7 +61,7 @@ export class DashboardComponent {
         takeUntilDestroyed(this.destroyRef),
         tap(response => {
           this.tabs.set(response.tabs);
-          if (!response.tabs.find(tab => tab.id === tabId)) {
+          if (!response.tabs.some(tab => tab.id === tabId)) {
             // если tabId не найден, ставим первый
             this.activeTabId.set(response.tabs[0]?.id ?? null);
           }
