@@ -13,3 +13,6 @@
     >
   }
 </nav>
+<div class="tools" [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
+  <a class="button" (click)="onAddDashboard()">+ Add Dashboard</a>
+</div>

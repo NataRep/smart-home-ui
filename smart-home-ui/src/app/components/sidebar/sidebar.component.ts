@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, TemplateRef } from '@angular/core';
 import { APP_TITLE } from '../../models/constants';
 import { AuthService } from '../../services/auth.service';
 import { DeviceService } from '../../services/device.service';
@@ -16,6 +16,8 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
+  @Input() addDashboardTemplate!: TemplateRef<unknown>;
+
   private deviceService = inject(DeviceService);
   authService = inject(AuthService);
 

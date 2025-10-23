@@ -1,8 +1,26 @@
 import { ITEM_TYPE } from "./enums";
 
-export interface CardValue {
-  amount: number;
-  unit: string;
+export interface Dashboard {
+  id: string,
+  title: string,
+  icon: string
+}
+
+export interface DashboardTabs {
+  tabs: Tab[];
+}
+
+export interface Tab {
+  id: string;
+  title: string;
+  cards: Card[];
+}
+
+export interface Card {
+  id: string;
+  title: string;
+  layout: string;
+  items: CardItem[];
 }
 
 export interface CardItem {
@@ -14,21 +32,24 @@ export interface CardItem {
   id: string;
 }
 
-export interface Card {
-  id: string;
-  title: string;
-  layout: string;
-  items: CardItem[];
+export interface CardValue {
+  amount: number;
+  unit: string;
 }
 
-export interface Tab {
-  id: string;
-  title: string;
-  cards: Card[];
+export interface Device {
+  id: string,
+  type: ITEM_TYPE.DEVICE,
+  icon: string,
+  label: string,
+  state: boolean
 }
 
-export interface DashboardTabs {
-  tabs: Tab[];
+export interface Sensor {
+  id: string,
+  type: ITEM_TYPE.SENSOR,
+  icon: string,
+  label: string,
 }
 
 export interface User {
@@ -38,18 +59,4 @@ export interface User {
 
 export interface LoginResponse {
   token: string
-}
-
-export interface Dashboard {
-  id: string,
-  title: string,
-  icon: string
-}
-
-export interface Device {
-  id: string,
-  type: ITEM_TYPE,
-  icon: string,
-  label: string,
-  state: boolean
 }

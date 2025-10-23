@@ -1,0 +1,146 @@
+.form {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: $background-color-secondary;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 768px) {
+    padding: 0;
+    margin: 0;
+  }
+
+  &__input {
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    &-wrap {
+      @extend .form__input;
+      position: relative;
+    }
+  }
+
+  &__label {
+    display: block;
+    color: $text-color;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  input {
+    width: calc(100% - 2rem);
+    padding: 0.75rem 1rem;
+    background: $background-color-primary;
+    border: 1px solid $grey-color;
+    border-radius: 8px;
+    color: $text-color;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::placeholder {
+      color: $grey-middle-color;
+    }
+  }
+
+  .password__icon {
+    position: absolute;
+    right: 1rem;
+    top: 2.4rem;
+    color: $grey-light-color;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: $primary-color;
+      }
+    }
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+
+  &__error {
+    position: absolute;
+    margin-top: 0.5rem;
+    color: $error-color;
+    font-size: 0.8rem;
+    animation: fadeIn 0.3s ease;
+
+    small {
+      display: block;
+    }
+  }
+
+  &__error-global {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: rgba($error-color, 0.1);
+    color: $error-color;
+    border-radius: 8px;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background: $primary-color;
+    color: $background-color-primary;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+
+    &:active {
+      background: darken($primary-color, 10%);
+    }
+
+    &:disabled {
+      background: $grey-middle-color;
+      cursor: not-allowed;
+      opacity: 0.7;
+      transform: none;
+    }
+  }
+
+  .buttons-row {
+    display: flex;
+
+    button {
+      margin-right: 1rem;
+    }
+
+    button:last-child {
+      margin-right: 0rem;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

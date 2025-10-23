@@ -3,6 +3,9 @@
 :host {
   flex-grow: 1;
   font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @include responsive-container-padding;
 }
@@ -13,11 +16,13 @@ nav {
   transition: opacity 0.5s;
 }
 
-nav.sidebar-open {
+nav.sidebar-open,
+.tools.sidebar-open {
   opacity: 1;
 }
 
-nav.sidebar-closed {
+nav.sidebar-closed,
+.tools.sidebar-closed {
   opacity: 0;
   pointer-events: none;
 }
@@ -27,7 +32,7 @@ a {
   display: flex;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  border: 2px solid $background-color-primary;
+  border: 2px solid $background-color-secondary;
   transition: border 0.25s linear;
 
   i {

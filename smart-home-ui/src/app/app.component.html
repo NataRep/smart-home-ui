@@ -1,4 +1,11 @@
-<app-sidebar></app-sidebar>
+<app-sidebar [addDashboardTemplate]="addDashboardTemplate"></app-sidebar>
 <main>
   <router-outlet />
 </main>
+<!-- Контейнер всегда есть в DOM -->
+<app-modal-container></app-modal-container>
+
+<!-- Шаблон, который передаётся в модалку -->
+<ng-template #addDashboardTemplate>
+  <app-add-dashboard-form></app-add-dashboard-form>
+</ng-template>

@@ -27,7 +27,6 @@ export class DeviceComponent extends BaseItemComponent implements OnInit {
   @Input() parentState!: Signal<boolean>;
   @Output() deviceToggled = new EventEmitter<boolean>();
 
-  // всегда инициализируем дефолтным объектом
   toggler = signal<Toggler>({ state: false });
 
   private isInitialized = false;

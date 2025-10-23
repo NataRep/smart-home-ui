@@ -1,0 +1,54 @@
+@use '../../../styles/variables' as *;
+
+:host.open {
+  position: absolute;
+  width: 100dvw;
+  height: 100dvb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal_overview {
+    position: absolute;
+    width: 100dvw;
+    height: 100dvb;
+    background-color: $background-color-primary;
+    opacity: 0;
+    animation: showOverview 0.25s linear forwards;
+  }
+
+  .modal_content {
+    position: relative;
+    background-color: $background-color-secondary;
+    padding: 2rem;
+    border-radius: 2rem;
+    border: 2px solid $primary-color;
+  }
+
+  .modal_close-button {
+    position: absolute;
+    top: 0.25rem;
+    right: 1rem;
+    padding: 0.125rem;
+    font-size: 2rem;
+    font-weight: 400;
+    color: $primary-color;
+    transform: rotate(45deg);
+    cursor: pointer;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+  }
+}
+
+@keyframes showOverview {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

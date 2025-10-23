@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, finalize, tap } from 'rxjs';
@@ -7,6 +7,7 @@ import { Dashboard, Tab } from '../../../models/api.model';
 import { MENU_LINKS } from '../../../models/constants';
 import { IconMapperPipe } from '../../../pipes/icon-mapper.pipe';
 import { DashboardService } from '../../../services/dashboard.service';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -18,7 +19,9 @@ import { DashboardService } from '../../../services/dashboard.service';
 })
 export class SidebarMenuComponent implements OnInit {
   @Input() isSidebarOpen: boolean = false;
+  @Input() addDashboardTemplate!: TemplateRef<unknown>;
 
+  private modalService = inject(ModalService)
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
@@ -84,5 +87,11 @@ export class SidebarMenuComponent implements OnInit {
       }),
       finalize(() => this.isLoading.set(false))
     ).subscribe();
+  }
+
+  onAddDashboard() {
+    if (this.addDashboardTemplate) {
+      this.modalService.open(this.addDashboardTemplate);
+    }
   }
 }

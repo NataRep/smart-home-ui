@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -12,29 +12,34 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
 
+  form!: FormGroup;
   errorMessage: string | null = null;
   isLoading = false;
   isPasswordVisible = false;
 
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(2)])
-  })
-
   constructor() {
-    this.form.valueChanges.subscribe(() => {
-      this.errorMessage = null;
-    });
-
     console.log('User: Warner', "Pass: ea")
   }
 
-  get name() { return this.form.get('name')!; }
-  get password() { return this.form.get('password')!; }
+  ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
+    this.form = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(2)])
+    })
+
+    this.form.valueChanges.subscribe(() => {
+      this.errorMessage = null;
+    });
+  }
+
 
   onSubmit() {
     if (this.form.valid) {
@@ -61,5 +66,8 @@ export class LoginComponent {
   togglePasswordVisibility() {
     this.isPasswordVisible = !this.isPasswordVisible
   }
+
+  get name() { return this.form.get('name')!; }
+  get password() { return this.form.get('password')!; }
 
 }
