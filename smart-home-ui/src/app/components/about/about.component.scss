@@ -2,3 +2,65 @@
   display: block;
   padding: 1rem 2rem;
 }
+
+/* about.component.scss */
+.about {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+  margin: 0 2rem;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    margin: 0rem;
+  }
+
+  &__content {
+    max-width: 1200px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__intro,
+  &__author,
+  &__conclusion {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  &__list {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__image {
+    flex: 0 0 300px;
+    max-width: 300px;
+    align-self: flex-end;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    &__image {
+      max-width: 100%;
+      align-self: center;
+    }
+  }
+}
