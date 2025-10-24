@@ -1,13 +1,15 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, finalize, tap } from 'rxjs';
-import { Dashboard, Tab } from '../../../models/api.model';
+import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
+import { Tab } from '../../../models/api.model';
 import { MENU_LINKS } from '../../../models/constants';
 import { IconMapperPipe } from '../../../pipes/icon-mapper.pipe';
-import { DashboardService } from '../../../services/dashboard.service';
 import { ModalService } from '../../../services/modal.service';
+import * as DashboardActions from '../../../store/dashboard/dashboard.actions';
+import { selectDashboardsList } from '../../../store/dashboard/dashboards.selectors';
+import { loadTabsAndNavigate } from '../../../store/tabs/tabs.actions';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -17,34 +19,25 @@ import { ModalService } from '../../../services/modal.service';
   styleUrl: './sidebar-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class SidebarMenuComponent implements OnInit {
-  @Input() isSidebarOpen: boolean = false;
+  @Input() isSidebarOpen = false;
   @Input() addDashboardTemplate!: TemplateRef<unknown>;
 
-  private modalService = inject(ModalService)
+  private modalService = inject(ModalService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private dashboardService = inject(DashboardService);
-  private destroyRef = inject(DestroyRef);
+  private store = inject(Store);
 
-  dashboards = signal<Dashboard[]>([]);
-  dashboardTabs = signal<Tab[]>([]);
-  isLoading = signal(true);
+  dashboards = this.store.selectSignal(selectDashboardsList);
   activeDashboardId = signal<string | null>(null);
   activeDashboardTabId = signal<string | null>(null);
-
+  dashboardTabs = signal<Tab[]>([]);
   linkList = MENU_LINKS;
 
   constructor() {
-    this.route.paramMap.subscribe(paramMap => {
-      const dashboardId = paramMap.get('dashboardId');
-      const tabId = paramMap.get('tabId');
-
-      this.activeDashboardId.set(dashboardId);
-      this.activeDashboardTabId.set(tabId);
-    });
-
-    this.loadDashboards();
+    this.initRouteListener();
+    this.store.dispatch(DashboardActions.loadDashboards());
   }
 
   ngOnInit() {
@@ -55,38 +48,25 @@ export class SidebarMenuComponent implements OnInit {
         while (snapshot.firstChild) {
           snapshot = snapshot.firstChild;
         }
-
         const dashboardId = snapshot.paramMap.get('dashboardId');
         const tabId = snapshot.paramMap.get('tabId');
-
         this.activeDashboardId.set(dashboardId);
         this.activeDashboardTabId.set(tabId);
       });
   }
 
-  loadDashboards() {
-    this.isLoading.set(true);
-    this.dashboardService.getDashboards()
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap(response => this.dashboards.set(response)),
-        finalize(() => this.isLoading.set(false))
-      )
-      .subscribe();
+  private initRouteListener() {
+    this.route.paramMap.subscribe(paramMap => {
+      const dashboardId = paramMap.get('dashboardId');
+      const tabId = paramMap.get('tabId');
+      this.activeDashboardId.set(dashboardId);
+      this.activeDashboardTabId.set(tabId);
+    });
   }
 
   onClickDashboard(id: string) {
     this.activeDashboardId.set(id);
-    this.isLoading.set(true);
-
-    this.dashboardService.getDashboardTabs(id).pipe(
-      takeUntilDestroyed(this.destroyRef),
-      tap(response => {
-        const firstTabId = response.tabs[0]?.id;
-        this.router.navigate(['dashboard', id, firstTabId]);
-      }),
-      finalize(() => this.isLoading.set(false))
-    ).subscribe();
+    this.store.dispatch(loadTabsAndNavigate({ dashboardId: id }));
   }
 
   onAddDashboard() {

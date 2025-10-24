@@ -2,7 +2,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
 (async () => {
   try {
     await bootstrapApplication(AppComponent, appConfig);

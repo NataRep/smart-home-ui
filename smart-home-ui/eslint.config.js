@@ -37,8 +37,10 @@ export default [
           ignore: ['\\.spec\\.ts$'], // Игнорируем тесты
         },
       ],
-      'unicorn/prevent-abbreviations': 'off', // Отключаем для Angular
-      'unicorn/no-null': 'off', // Разрешаем null
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/consistent-function-scoping': 'off',
+      'unicorn/prefer-top-level-await': 'off',
+      'unicorn/no-null': 'off',
       '@angular-eslint/component-selector': [
         'error',
         { type: 'element', prefix: 'app', style: 'kebab-case' },

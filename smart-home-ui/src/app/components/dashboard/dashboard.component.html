@@ -1,19 +1,15 @@
-@if (isLoading()) {
-  <div class="loading">
-     <i class="fa-solid fa-circle-notch"></i><span>Loading...</span></div>
+@if (showLoading()) {
+  <div class="loading"><i class="fa-solid fa-circle-notch"></i><span>Loading...</span></div>
 } @else {
   <div class="tab-header">
     @for (tab of tabs(); track tab.id) {
-      <button
-        [class.active]="activeTabId() === tab.id"
-        (click)="onTabButton(tab.id)"
-      >
+      <button [class.active]="activeTabId() === tab.id" (click)="onTabButton(tab.id)">
         {{ tab.title }}
       </button>
     }
   </div>
 
   <div class="tab-content">
-    <app-card-list [cardsData]="activeTabCards()"></app-card-list>    
+    <app-card-list [cardsData]="activeTabCards()"></app-card-list>
   </div>
 }

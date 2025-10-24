@@ -2,11 +2,14 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ApiPrefixInterceptor } from './interceptors/prefix.interceptor';
+import { DashboardEffects } from './store/dashboard/dashboard.effects';
 import { dashboardReducer } from './store/dashboard/dashboard.reducer';
+import { TabsEffects } from './store/tabs/tabs.effects';
 import { tabsReducer } from './store/tabs/tabs.reducer';
 
 export const appConfig: ApplicationConfig = {
@@ -19,7 +22,6 @@ export const appConfig: ApplicationConfig = {
       //cards: cardsReducer,
       //devices: devicesReducer,
     }),
+    provideEffects([DashboardEffects, TabsEffects]),
   ],
-
-  //provideEffects([DevicesEffects]), // сюда можно добавлять другие эффекты по мере необходимости
 };
