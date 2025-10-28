@@ -20,7 +20,7 @@ export const selectTabsError = createSelector(
   state => state.error
 );
 
-export const selectDeviceById = (deviceId: string) =>
+export const selectDeviceStateById = (deviceId: string) =>
   createSelector(selectTabsState, (state: TabsState): Device | undefined => {
     for (const tab of state.tabs) {
       for (const card of tab.cards) {
@@ -33,3 +33,13 @@ export const selectDeviceById = (deviceId: string) =>
     }
     return undefined;
   });
+
+export const selectTabsLoading = createSelector(
+  selectTabsState,
+  (state: TabsState) => state.isLoading
+);
+
+export const selectAllTabs = createSelector(
+  selectTabsState,
+  (state: TabsState) => state.tabs
+);

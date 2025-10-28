@@ -7,14 +7,15 @@ import {
   Input,
   OnInit,
   signal,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize, forkJoin, tap } from 'rxjs';
-import { Card, Device } from '../../models/api.model';
+import { Store } from '@ngrx/store';
+import { Card, Device, Tab } from '../../models/api.model';
 import { CARD_LAYOUT, ITEM_TYPE, Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
-import { DashboardService } from '../../services/dashboard.service';
+import * as TabsActions from '../../store/tabs/tabs.actions';
+import { selectTabsLoading, selectTabsState } from '../../store/tabs/tabs.selectors';
 import { DeviceComponent } from '../device/device.component';
 import { SensorComponent } from '../sensor/sensor.component';
 import { ToggleComponent } from '../toggler/toggler.component';
@@ -30,7 +31,7 @@ import { ToggleComponent } from '../toggler/toggler.component';
 export class CardComponent implements OnInit, AfterContentInit {
   @Input() cardData!: Card;
 
-  private dashboardService = inject(DashboardService);
+  private store = inject(Store);
   private destroyRef = inject(DestroyRef);
 
   isLoading = signal(false);
@@ -39,7 +40,20 @@ export class CardComponent implements OnInit, AfterContentInit {
   toggler = signal<Toggler | null>(null);
   deviceSignals: WritableSignal<boolean>[] = [];
 
+  // Селекторы для отслеживания состояния
+  private tabsState$ = this.store.select(selectTabsState);
+  private loadingState$ = this.store.select(selectTabsLoading);
+
   ngOnInit() {
+    this.initializeComponentState();
+    this.setupStateSubscriptions();
+  }
+
+  ngAfterContentInit() {
+    this.isToggle = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE).length > 1;
+  }
+
+  private initializeComponentState() {
     const devices = this.cardData.items.filter(
       (item): item is Device => item.type === ITEM_TYPE.DEVICE,
     );
@@ -49,38 +63,67 @@ export class CardComponent implements OnInit, AfterContentInit {
     this.layout = this.cardData.layout;
   }
 
-  ngAfterContentInit() {
-    this.isToggle = this.cardData.items.filter((item) => item.type === ITEM_TYPE.DEVICE).length > 1;
+  private setupStateSubscriptions() {
+    // Отслеживаем обновления состояния устройств
+    this.tabsState$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(state => {
+      this.updateLocalDeviceStates(state.tabs);
+    });
+
+    // Отслеживаем состояние загрузки
+    this.loadingState$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(loading => {
+      this.isLoading.set(loading);
+    });
+  }
+
+  private updateLocalDeviceStates(tabs: Tab[]) {
+    // Находим актуальные состояния устройств из store
+    const allDevices = tabs.flatMap(tab =>
+      tab.cards.flatMap(card =>
+        card.items.filter((item): item is Device => item.type === ITEM_TYPE.DEVICE)
+      )
+    );
+
+    const deviceMap = new Map(allDevices.map(device => [device.id, device.state]));
+
+    for (const [index, item] of this.cardData.items.entries()) {
+      if (item.type === ITEM_TYPE.DEVICE) {
+        const currentState = this.deviceSignals[index]();
+        const newState = Boolean(deviceMap.get(item.id));
+
+        if (currentState !== newState) {
+          this.deviceSignals[index].set(newState);
+        }
+      }
+    }
+
+    this.syncParentToggle();
   }
 
   onToggleChange() {
     const newState = !this.toggler()!.state;
-    const deviceRequests = this.cardData.items
-      .filter((item): item is Device => item.type === ITEM_TYPE.DEVICE)
-      .map((item) => this.dashboardService.changeStateDeviceById(item.id, newState));
-    this.isLoading.set(true);
-    forkJoin(deviceRequests)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe((responses) => {
-        for (const [i, resp] of responses.entries()) this.deviceSignals[i].set(resp.state);
-        this.toggler.set({ state: newState });
-      });
+    const devices = this.cardData.items
+      .filter((item): item is Device => item.type === ITEM_TYPE.DEVICE);
+
+    for (const device of devices) {
+      this.store.dispatch(TabsActions.toggleDeviceState({
+        id: device.id,
+        state: newState
+      }));
+    }
   }
 
   onDeviceToggled(index: number, newState: boolean) {
-    const id = this.cardData.items[index].id;
-    this.isLoading.set(true);
-    this.dashboardService
-      .changeStateDeviceById(id, newState)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap((response) => {
-          this.deviceSignals[index].set(response.state);
-          this.syncParentToggle();
-        }),
-        finalize(() => this.isLoading.set(false)),
-      )
-      .subscribe();
+    const device = this.cardData.items[index];
+    if (device.type === ITEM_TYPE.DEVICE) {
+      this.store.dispatch(TabsActions.toggleDeviceState({
+        id: device.id,
+        state: newState
+      }));
+    }
   }
 
   private syncParentToggle() {
