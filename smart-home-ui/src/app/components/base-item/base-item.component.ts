@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CardItem } from '../../models/api.model';
+import { Device, Sensor } from '../../models/api.model';
 
 @Component({
   selector: 'app-base-item',
@@ -9,7 +9,7 @@ import { CardItem } from '../../models/api.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseItemComponent {
-  @Input() itemData!: CardItem;
+  @Input() itemData!: Device | Sensor;
   @Input() layoutType!: string;
 
   logItemInfo() {

@@ -6,7 +6,7 @@
       <app-toggle [toggler]="toggler()!" (toggleChange)="onToggleChange()"> </app-toggle>
     }
 
-    @if (layout === 'CARD_LAYOUT.SINGLE' && cardData.items[0].type === 'ITEM_TYPE.DEVICE') {
+    @if (layout === 'CARD_LAYOUT.SINGLE' && cardData.items[0].type === 'device') {
       <div
         class="icon {{ cardData.items[0].icon }}"
         [class.active]="toggler()?.state"

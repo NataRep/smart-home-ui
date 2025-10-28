@@ -10,7 +10,7 @@ import {
   Signal,
   signal,
 } from '@angular/core';
-import { Toggler } from '../../models/enums';
+import { ITEM_TYPE, Toggler } from '../../models/enums';
 import { IconMapperPipe } from '../../pipes/icon-mapper.pipe';
 import { BaseItemComponent } from '../base-item/base-item.component';
 import { ToggleComponent } from '../toggler/toggler.component';
@@ -49,7 +49,7 @@ export class DeviceComponent extends BaseItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.itemData.state !== undefined) {
+    if (this.itemData.type == ITEM_TYPE.DEVICE) {
       this.toggler.set({ state: this.itemData.state });
     }
   }

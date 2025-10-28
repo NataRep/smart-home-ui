@@ -20,21 +20,7 @@ export interface Card {
   id: string;
   title: string;
   layout: string;
-  items: CardItem[];
-}
-
-export interface CardItem {
-  type: string;
-  icon: string;
-  label: string;
-  value?: CardValue;
-  state?: boolean;
-  id: string;
-}
-
-export interface CardValue {
-  amount: number;
-  unit: string;
+  items: (Device | Sensor)[];
 }
 
 export interface Device {
@@ -50,6 +36,12 @@ export interface Sensor {
   type: ITEM_TYPE.SENSOR,
   icon: string,
   label: string,
+  value: SensorValue;
+}
+
+export interface SensorValue {
+  amount: number;
+  unit: string;
 }
 
 export interface User {

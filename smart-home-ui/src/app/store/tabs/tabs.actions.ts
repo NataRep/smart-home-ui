@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Tab } from '../../models/api.model';
+import { Device, Tab } from '../../models/api.model';
 
 export const loadTabs = createAction(
   '[Tabs] Load Tabs',
@@ -59,4 +59,21 @@ export const navigateToFirstTab = createAction(
 export const loadTabsAndNavigate = createAction(
   '[Tabs] Load Tabs And Navigate',
   props<{ dashboardId: string }>()
+);
+
+
+
+export const toggleDeviceState = createAction(
+  '[Devices] Toggle Device state',
+  props<{ id: string, state: boolean }>()
+);
+
+export const toggleDeviceStateSuccess = createAction(
+  '[Devices] Toggle Device State Success',
+  props<{ device: Device }>()
+);
+
+export const toggleDeviceStateFailure = createAction(
+  '[Devices] Toggle Device State Failure',
+  props<{ error: unknown }>()
 );

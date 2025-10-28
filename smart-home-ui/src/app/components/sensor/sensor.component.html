@@ -1,9 +1,12 @@
-<div [ngClass]="['sensor', (layoutType || '')]">
+<div [ngClass]="['sensor', layoutType || '']">
   <div class="title">
     <div class="icon">
-      <i class="fa-solid {{ itemData.icon | iconMapper}}"></i>
+      <i class="fa-solid {{ itemData.icon | iconMapper }}"></i>
     </div>
     <div class="label">{{ itemData.label }}</div>
   </div>
-  <div class="value">{{ itemData | sensorValue}}</div>
+
+  @if (itemData.type === 'sensor') {
+    <div class="value">{{ itemData | sensorValue }}</div>
+  }
 </div>

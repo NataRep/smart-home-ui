@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { Tab } from '../../models/api.model';
+import { Device, Tab } from '../../models/api.model';
+import { ITEM_TYPE } from '../../models/enums';
 import * as TabsActions from './tabs.actions';
 
 export interface TabsState {
@@ -32,8 +33,48 @@ export const tabsReducer = createReducer(
     ...state,
     isLoading: false,
     error
-  }))
+  })),
+
+  on(TabsActions.toggleDeviceState, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(TabsActions.toggleDeviceStateSuccess, (state, { device }) => {
+    const updatedTabs = state.tabs.map(tab =>
+      updateDeviceStateInTab(device, tab)
+    );
+
+    return {
+      ...state,
+      tabs: updatedTabs,
+      loading: false,
+      error: null,
+    };
+  }),
+
+  on(TabsActions.toggleDeviceStateFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
 );
+
+function updateDeviceStateInTab(device: Device, tab: Tab): Tab {
+  return {
+    ...tab,
+    cards: tab.cards.map(card => ({
+      ...card,
+      items: card.items.map(item =>
+        item.type === ITEM_TYPE.DEVICE && item.id === device.id
+          ? { ...device }
+          : item
+      )
+    }))
+  };
+}
 
 /*
 

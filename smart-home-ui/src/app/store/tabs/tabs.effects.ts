@@ -1,9 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { catchError, of, switchMap } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { Device } from '../../models/api.model';
 import { DashboardService } from '../../services/dashboard.service';
 import * as TabsActions from './tabs.actions';
 
@@ -12,22 +11,21 @@ export class TabsEffects {
   private actions$ = inject(Actions);
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
-  private store = inject(Store);
 
+  // Загрузка вкладок
   loadTabs$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TabsActions.loadTabs),
       switchMap(action =>
         this.dashboardService.getDashboardTabs(action.dashboardId).pipe(
-          switchMap(response => [
-            TabsActions.loadTabsSuccess({ tabs: response.tabs })
-          ]),
+          map(response => TabsActions.loadTabsSuccess({ tabs: response.tabs })),
           catchError(error => of(TabsActions.loadTabsFailure({ error })))
         )
       )
     )
   );
 
+  // Загрузка вкладок и навигация на первую
   loadTabsAndNavigate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TabsActions.loadTabsAndNavigate),
@@ -37,7 +35,7 @@ export class TabsEffects {
             TabsActions.loadTabsSuccess({ tabs: response.tabs }),
             TabsActions.navigateToFirstTab({
               dashboardId: action.dashboardId,
-              tabId: response.tabs[0]?.id
+              tabId: response.tabs[0]?.id ?? null
             })
           ]),
           catchError(error => of(TabsActions.loadTabsFailure({ error })))
@@ -46,6 +44,7 @@ export class TabsEffects {
     )
   );
 
+  // Навигация на первую вкладку (без dispatch)
   navigateToFirstTab$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -57,5 +56,18 @@ export class TabsEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  // Переключение состояния устройства
+  toggleDeviceState$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TabsActions.toggleDeviceState),
+      mergeMap(action =>
+        this.dashboardService.changeStateDeviceById(action.id, action.state).pipe(
+          map((device: Device) => TabsActions.toggleDeviceStateSuccess({ device })),
+          catchError(error => of(TabsActions.toggleDeviceStateFailure({ error })))
+        )
+      )
+    )
   );
 }

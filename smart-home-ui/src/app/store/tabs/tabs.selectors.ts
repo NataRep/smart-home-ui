@@ -1,4 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Device } from '../../models/api.model';
+import { ITEM_TYPE } from '../../models/enums';
 import { TabsState } from './tabs.reducer';
 
 export const selectTabsState = createFeatureSelector<TabsState>('tabs');
@@ -17,3 +19,17 @@ export const selectTabsError = createSelector(
   selectTabsState,
   state => state.error
 );
+
+export const selectDeviceById = (deviceId: string) =>
+  createSelector(selectTabsState, (state: TabsState): Device | undefined => {
+    for (const tab of state.tabs) {
+      for (const card of tab.cards) {
+        for (const item of card.items) {
+          if (item.type === ITEM_TYPE.DEVICE && item.id === deviceId) {
+            return item as Device;
+          }
+        }
+      }
+    }
+    return undefined;
+  });

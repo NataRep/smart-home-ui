@@ -1,14 +1,16 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ApiPrefixInterceptor } from './interceptors/prefix.interceptor';
 import { DashboardEffects } from './store/dashboard/dashboard.effects';
 import { dashboardReducer } from './store/dashboard/dashboard.reducer';
+import { devicesReducer } from './store/devices/devices.reducer';
 import { TabsEffects } from './store/tabs/tabs.effects';
 import { tabsReducer } from './store/tabs/tabs.reducer';
 
@@ -20,8 +22,14 @@ export const appConfig: ApplicationConfig = {
       tabs: tabsReducer,
       dashboards: dashboardReducer,
       //cards: cardsReducer,
-      //devices: devicesReducer,
+      devices: devicesReducer,
     }),
     provideEffects([DashboardEffects, TabsEffects]),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: false,
+    }),
   ],
 };

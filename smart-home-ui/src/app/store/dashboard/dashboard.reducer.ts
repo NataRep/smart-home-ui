@@ -64,5 +64,5 @@ export const dashboardReducer = createReducer(
     snapshotDashboard: null,
     loading: false,
     error: null,
-  }))
+  })),
 );
