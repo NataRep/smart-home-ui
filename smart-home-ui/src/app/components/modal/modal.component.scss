@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
 
-    .modal_overview {
+    .modal__overview {
       position: absolute;
       width: 100dvw;
       height: 100dvb;
@@ -21,7 +21,7 @@
       animation: showOverview 0.25s linear forwards;
     }
 
-    .modal_content {
+    .modal__content {
       position: relative;
       background-color: $background-color-secondary;
       padding: 2rem;
@@ -29,7 +29,7 @@
       border: 2px solid $primary-color;
     }
 
-    .modal_close-button {
+    .modal__close-button {
       position: absolute;
       top: 0.25rem;
       right: 1rem;

@@ -8,7 +8,7 @@
   position: relative;
 }
 
-.tab-header {
+.tabs__header {
   width: 100%;
   height: 72px;
   display: flex;
@@ -34,7 +34,7 @@ button {
   border-bottom: 3px solid $grey-light-color;
 }
 
-.tab-content {
+.tabs__content {
   @include responsive-container-padding;
 }
 

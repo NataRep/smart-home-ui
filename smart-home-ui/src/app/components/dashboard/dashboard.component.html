@@ -1,15 +1,20 @@
 @if (showLoading()) {
   <div class="loading"><i class="fa-solid fa-circle-notch"></i><span>Loading...</span></div>
 } @else {
-  <div class="tab-header">
-    @for (tab of tabs(); track tab.id) {
-      <button [class.active]="activeTabId() === tab.id" (click)="onTabButton(tab.id)">
-        {{ tab.title }}
-      </button>
-    }
+  <div class="tabs__header">
+    <div class="tabs__list">
+      @for (tab of tabs(); track tab.id) {
+        <button [class.active]="activeTabId() === tab.id" (click)="onTabButton(tab.id)">
+          {{ tab.title }}
+        </button>
+      }
+    </div>
+    <div class="tabs__tools">
+      <button class="button_delete" (click)="onDashboardDeleteButton()">Delete</button>
+    </div>
   </div>
 
-  <div class="tab-content">
+  <div class="tabs__content">
     <app-card-list [cardsData]="activeTabCards()"></app-card-list>
   </div>
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, Input, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,6 +16,8 @@ import { CardListComponent } from '../card-list/card-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
+  @Input() deleteDashboardTemplate!: TemplateRef<unknown>;
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(Store);
@@ -98,5 +100,9 @@ export class DashboardComponent {
     if (this.dashboardId()) {
       this.router.navigate(['dashboard', this.dashboardId(), tabId]);
     }
+  }
+
+  onDashboardDeleteButton() {
+    console.log(this.dashboardId());
   }
 }
