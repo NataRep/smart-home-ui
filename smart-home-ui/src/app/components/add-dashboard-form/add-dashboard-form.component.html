@@ -51,13 +51,13 @@
       </div>
     }
   </div>
-  @if (errorMessage) {
+  @if (errorMessage()) {
     <div class="form__error-global">
-      {{ errorMessage }}
+      {{ errorMessage() }}
     </div>
   }
   <div class="buttons-row">
-    <button type="button" [disabled]="isLoading" (click)="onCancel()">Cancel</button>
-    <button type="submit" [disabled]="isLoading">Add</button>
+    <button type="button" [disabled]="isLoading()" (click)="onCancel()">Cancel</button>
+    <button type="submit" [disabled]="isLoading()">Add</button>
   </div>
 </form>

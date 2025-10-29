@@ -1,7 +1,10 @@
 // component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { ModalService } from '../../services/modal.service';
+import { clearDashboardsError, createDashboard } from '../../store/dashboard/dashboard.actions';
+import { selectErrorDashboards, selectLoadingDashboards } from '../../store/dashboard/dashboards.selectors';
 
 @Component({
   selector: 'app-add-dashboard-form',
@@ -12,9 +15,12 @@ import { ModalService } from '../../services/modal.service';
 })
 export class AddDashboardFormComponent implements OnInit {
   private modalService = inject(ModalService);
+  private store = inject(Store);
+
+  isLoading = this.store.selectSignal(selectLoadingDashboards);
+  errorMessage = this.store.selectSignal(selectErrorDashboards)
+
   form!: FormGroup;
-  errorMessage: string | null = null;
-  isLoading = false;
 
   ngOnInit() {
     this.createForm();
@@ -34,17 +40,16 @@ export class AddDashboardFormComponent implements OnInit {
     )
 
     this.form.valueChanges.subscribe(() => {
-      this.errorMessage = null;
+      this.store.dispatch(clearDashboardsError());
     });
   }
 
   onSubmit() {
-    console.log("Submit!");
-    this.modalService.close();
+    const dashboard = this.form.value;
+    this.store.dispatch(createDashboard({ dashboard }));
   }
 
   onCancel() {
     this.modalService.close();
   }
-
 }

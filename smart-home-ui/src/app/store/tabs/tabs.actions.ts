@@ -61,8 +61,6 @@ export const loadTabsAndNavigate = createAction(
   props<{ dashboardId: string }>()
 );
 
-
-
 export const toggleDeviceState = createAction(
   '[Devices] Toggle Device state',
   props<{ id: string, state: boolean }>()

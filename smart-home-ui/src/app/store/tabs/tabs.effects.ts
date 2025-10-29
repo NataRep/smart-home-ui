@@ -31,13 +31,18 @@ export class TabsEffects {
       ofType(TabsActions.loadTabsAndNavigate),
       switchMap(action =>
         this.dashboardService.getDashboardTabs(action.dashboardId).pipe(
-          switchMap(response => [
-            TabsActions.loadTabsSuccess({ tabs: response.tabs }),
-            TabsActions.navigateToFirstTab({
-              dashboardId: action.dashboardId,
-              tabId: response.tabs[0]?.id ?? null
-            })
-          ]),
+          switchMap(response => {
+            const tabs = response.tabs ?? [];
+            const firstTabId = tabs.length > 0 ? tabs[0].id : "null";
+
+            return [
+              TabsActions.loadTabsSuccess({ tabs }),
+              TabsActions.navigateToFirstTab({
+                dashboardId: action.dashboardId,
+                tabId: firstTabId
+              })
+            ];
+          }),
           catchError(error => of(TabsActions.loadTabsFailure({ error })))
         )
       )

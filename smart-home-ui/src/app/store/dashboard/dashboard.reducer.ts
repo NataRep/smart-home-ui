@@ -3,7 +3,7 @@ import { Dashboard } from '../../models/api.model';
 import * as DashboardActions from './dashboard.actions';
 
 export interface DashboardsState {
-  dashboardsList: Dashboard[];
+  dashboards: Dashboard[];
   selectedDashboard: Dashboard | null;
   loading: boolean;
   error: unknown;
@@ -11,7 +11,7 @@ export interface DashboardsState {
 }
 
 export const initialState: DashboardsState = {
-  dashboardsList: [],
+  dashboards: [],
   selectedDashboard: null,
   loading: false,
   error: null,
@@ -30,7 +30,7 @@ export const dashboardReducer = createReducer(
 
   on(DashboardActions.loadDashboardsSuccess, (state, { dashboards }) => ({
     ...state,
-    dashboardsList: dashboards,
+    dashboards: dashboards,
     loading: false,
   })),
 
@@ -48,8 +48,10 @@ export const dashboardReducer = createReducer(
 
   on(DashboardActions.createDashboardSuccess, (state, { dashboard }) => ({
     ...state,
+    dashboards: [...state.dashboards, dashboard],
     selectedDashboard: dashboard,
     loading: false,
+
   })),
 
   on(DashboardActions.createDashboardFailure, (state, { error }) => ({
@@ -64,5 +66,10 @@ export const dashboardReducer = createReducer(
     snapshotDashboard: null,
     loading: false,
     error: null,
+  })),
+
+  on(DashboardActions.clearDashboardsError, (state) => ({
+    ...state,
+    error: null
   })),
 );

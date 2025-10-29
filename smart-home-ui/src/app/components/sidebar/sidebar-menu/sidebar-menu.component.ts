@@ -24,10 +24,10 @@ export class SidebarMenuComponent implements OnInit {
   @Input() isSidebarOpen = false;
   @Input() addDashboardTemplate!: TemplateRef<unknown>;
 
-  private modalService = inject(ModalService);
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(Store);
+  private modalService = inject(ModalService);
+  private route = inject(ActivatedRoute);
 
   dashboards = this.store.selectSignal(selectDashboardsList);
   activeDashboardId = signal<string | null>(null);

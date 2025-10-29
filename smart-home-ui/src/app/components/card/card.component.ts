@@ -40,7 +40,6 @@ export class CardComponent implements OnInit, AfterContentInit {
   toggler = signal<Toggler | null>(null);
   deviceSignals: WritableSignal<boolean>[] = [];
 
-  // Селекторы для отслеживания состояния
   private tabsState$ = this.store.select(selectTabsState);
   private loadingState$ = this.store.select(selectTabsLoading);
 

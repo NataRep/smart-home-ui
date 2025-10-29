@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { DashboardService } from "../../services/dashboard.service";
 import * as DashboardActions from './dashboard.actions';
 
@@ -18,4 +18,17 @@ export class DashboardEffects {
           catchError(error => of(DashboardActions.loadDashboardsFailure({ error })))
         ))
     ));
+
+  createDashboard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.createDashboard),
+      exhaustMap((action) =>
+        this.dashboardService.createDashboard({ ...action.dashboard }).pipe(
+          map(dashboard => DashboardActions.createDashboardSuccess({ dashboard })),
+          catchError(error => {
+            return of(DashboardActions.createDashboardFailure({ error: error.error || 'Something is wrong. Please change the details.' }))
+          })
+        ))
+    )
+  )
 }

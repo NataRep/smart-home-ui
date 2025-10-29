@@ -36,3 +36,5 @@ export const discardChanges = createAction(
   '[Dashboard] Discard Changes'
 );
 
+export const clearDashboardsError = createAction('[Dashboard] Clear Error');
+

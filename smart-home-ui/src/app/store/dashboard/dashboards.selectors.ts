@@ -5,10 +5,15 @@ export const selectDashboardsState = createFeatureSelector<DashboardsState>('das
 
 export const selectDashboardsList = createSelector(
   selectDashboardsState,
-  state => state.dashboardsList
+  state => state.dashboards
 );
 
 export const selectLoadingDashboards = createSelector(
   selectDashboardsState,
   state => state.loading
+);
+
+export const selectErrorDashboards = createSelector(
+  selectDashboardsState,
+  state => state.error
 );
