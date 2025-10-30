@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, DestroyRef, HostBinding, inject, On
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ModalService } from '../../services/modal.service';
 
-
 @Component({
   selector: 'app-modal-container',
   standalone: true,
@@ -13,7 +12,7 @@ import { ModalService } from '../../services/modal.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalContainerComponent implements OnInit {
-  private modalService = inject(ModalService);
+  modalService = inject(ModalService);
   private destroyRef = inject(DestroyRef);
 
   @HostBinding('class.open') isOpen = false;

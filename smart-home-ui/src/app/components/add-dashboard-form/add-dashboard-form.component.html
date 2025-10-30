@@ -1,23 +1,6 @@
 <h1>Add new dashboard</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
   <div class="form__input">
-    <label for="id" class="form__label">Id: </label>
-    <input id="id" type="text" formControlName="id" />
-    @if (id.invalid && (id.dirty || id.touched)) {
-      <div class="form__error">
-        @if (id.errors?.['required']) {
-          <small>Enter id for dashboard</small>
-        } @else if (id.errors?.['minlength']) {
-          <small>Min length 2 characters</small>
-        } @else if (id.errors?.['maxlength']) {
-          <small>Max length 30 characters</small>
-        } @else if (id.errors?.['pattern']) {
-          <small>Only Latin letters are allowed</small>
-        }
-      </div>
-    }
-  </div>
-  <div class="form__input">
     <label for="title" class="form__label">Title: </label>
     <input id="title" type="text" formControlName="title" />
     @if (title.invalid && (title.dirty || title.touched)) {
@@ -29,6 +12,23 @@
         } @else if (title.errors?.['maxlength']) {
           <small>Max length 20 characters</small>
         } @else if (title.errors?.['pattern']) {
+          <small>Only Latin letters are allowed</small>
+        }
+      </div>
+    }
+  </div>
+  <div class="form__input">
+    <label for="id" class="form__label">Id: </label>
+    <input id="id" type="text" formControlName="id" />
+    @if (id.invalid && (id.dirty || id.touched)) {
+      <div class="form__error">
+        @if (id.errors?.['required']) {
+          <small>Enter id for dashboard</small>
+        } @else if (id.errors?.['minlength']) {
+          <small>Min length 2 characters</small>
+        } @else if (id.errors?.['maxlength']) {
+          <small>Max length 30 characters</small>
+        } @else if (id.errors?.['pattern']) {
           <small>Only Latin letters are allowed</small>
         }
       </div>

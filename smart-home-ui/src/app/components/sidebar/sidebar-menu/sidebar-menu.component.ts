@@ -1,20 +1,22 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 import { Tab } from '../../../models/api.model';
 import { MENU_LINKS } from '../../../models/constants';
+import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { IconMapperPipe } from '../../../pipes/icon-mapper.pipe';
 import { ModalService } from '../../../services/modal.service';
 import * as DashboardActions from '../../../store/dashboard/dashboard.actions';
 import { selectDashboardsList } from '../../../store/dashboard/dashboards.selectors';
 import { loadTabsAndNavigate } from '../../../store/tabs/tabs.actions';
+import { AddDashboardFormComponent } from '../../add-dashboard-form/add-dashboard-form.component';
 
 @Component({
   selector: 'app-sidebar-menu',
   standalone: true,
-  imports: [RouterModule, NgClass, IconMapperPipe],
+  imports: [RouterModule, NgClass, IconMapperPipe, AddDashboardFormComponent, CapitalizePipe],
   templateUrl: './sidebar-menu.component.html',
   styleUrl: './sidebar-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +24,8 @@ import { loadTabsAndNavigate } from '../../../store/tabs/tabs.actions';
 
 export class SidebarMenuComponent implements OnInit {
   @Input() isSidebarOpen = false;
-  @Input() addDashboardTemplate!: TemplateRef<unknown>;
+  @ViewChild('addDashboardTemplate', { static: true })
+  addDashboardTemplate!: TemplateRef<unknown>;
 
   private router = inject(Router);
   private store = inject(Store);
@@ -70,8 +73,6 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   onAddDashboard() {
-    if (this.addDashboardTemplate) {
-      this.modalService.open(this.addDashboardTemplate);
-    }
+    this.modalService.open(this.addDashboardTemplate, 'addDashboard');
   }
 }

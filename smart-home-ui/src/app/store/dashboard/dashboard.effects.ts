@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of, switchMap } from 'rxjs';
 import { DashboardService } from "../../services/dashboard.service";
 import * as DashboardActions from './dashboard.actions';
 
@@ -31,4 +31,13 @@ export class DashboardEffects {
         ))
     )
   )
+
+  deleteDashboard$ = createEffect(() => this.actions$.pipe(
+    ofType(DashboardActions.deleteDashboard),
+    mergeMap(({ dashboardId }) =>
+      this.dashboardService.deleteDashboardById(dashboardId).pipe(
+        map(() => DashboardActions.deleteDashboardSuccess({ dashboardId })),
+        catchError(error => of(DashboardActions.deleteDashboardFailure({ error })))
+      )
+    )))
 }

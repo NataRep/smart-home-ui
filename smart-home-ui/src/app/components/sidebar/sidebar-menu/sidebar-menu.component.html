@@ -4,15 +4,13 @@
       [class.active]="activeDashboardId() === dashboard.id"
       (click)="onClickDashboard(dashboard.id)"
     >
-      <i class="fa-solid {{ dashboard.icon | iconMapper }}"></i>{{ dashboard.title }}
+      <i class="fa-solid {{ dashboard.icon | iconMapper }}"></i>{{ dashboard.title | capitalize }}
     </a>
-  }
-  @for (link of linkList; track link.id) {
-    <a [routerLink]="[link.id]" routerLinkActive="active">
-      <i class="fa-solid {{ link.icon | iconMapper }}"></i>{{ link.title }}</a
-    >
   }
 </nav>
 <div class="tools" [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
   <a class="button" (click)="onAddDashboard()">+ Add Dashboard</a>
 </div>
+<ng-template #addDashboardTemplate>
+  <app-add-dashboard-form></app-add-dashboard-form>
+</ng-template>

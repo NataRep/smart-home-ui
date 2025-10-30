@@ -17,3 +17,9 @@ export const selectErrorDashboards = createSelector(
   selectDashboardsState,
   state => state.error
 );
+
+export const selectorDashboardById = (id: string) =>
+  createSelector(
+    selectDashboardsList,
+    dashboards => dashboards.find(d => d.id === id) || null
+  );

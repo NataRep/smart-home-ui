@@ -1,5 +1,7 @@
-<div class="modal__overview" (click)="close()"></div>
-<div class="modal__content">
-  <div class="modal__close-button" (click)="close()">+</div>
-  <ng-container *ngTemplateOutlet="content$ | async"></ng-container>
-</div>
+<ng-container *ngIf="modalService.isOpen$ | async">
+  <div class="modal__overview" (click)="close()"></div>
+  <div class="modal__content">
+    <div class="modal__close-button" (click)="close()">+</div>
+    <ng-container *ngTemplateOutlet="modalService.content$ | async"></ng-container>
+  </div>
+</ng-container>

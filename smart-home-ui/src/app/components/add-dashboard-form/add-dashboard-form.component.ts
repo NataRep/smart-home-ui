@@ -47,9 +47,14 @@ export class AddDashboardFormComponent implements OnInit {
   onSubmit() {
     const dashboard = this.form.value;
     this.store.dispatch(createDashboard({ dashboard }));
+
+    if (!this.errorMessage()) {
+      this.modalService.close();
+    }
   }
 
   onCancel() {
     this.modalService.close();
   }
+
 }
