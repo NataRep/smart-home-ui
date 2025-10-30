@@ -1,27 +1,33 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, Input, signal, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal, TemplateRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { timer } from 'rxjs';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+import { ModalService } from '../../services/modal.service';
+import { selectorDashboardById } from '../../store/dashboard/dashboards.selectors';
 import { loadTabs } from '../../store/tabs/tabs.actions';
 import { selectLoadingTabs, selectTabsError, selectTabsList } from '../../store/tabs/tabs.selectors';
 import { CardListComponent } from '../card-list/card-list.component';
+import { ConfirmDeleteDashboardComponent } from '../confirm-delete-dashboard/confirm-delete-dashboard.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardListComponent],
+  imports: [CardListComponent, ConfirmDeleteDashboardComponent, CapitalizePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
-  @Input() deleteDashboardTemplate!: TemplateRef<unknown>;
+  @ViewChild('deleteConfirmDashboardTemplate', { static: true })
+  deleteDashboardTemplate!: TemplateRef<unknown>;
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(Store);
   private destroyRef = inject(DestroyRef);
+  private modalService = inject(ModalService);
 
   // Сигналы
   tabs = this.store.selectSignal(selectTabsList);
@@ -56,6 +62,8 @@ export class DashboardComponent {
         if (dashboardId) {
           this.loadTabs(dashboardId);
         }
+
+        //TODO если tabId нет в списке для dashboardId и он не равен 'null', то сделать редирект на 404
       });
   }
 
@@ -103,6 +111,13 @@ export class DashboardComponent {
   }
 
   onDashboardDeleteButton() {
-    console.log(this.dashboardId());
+    const id = this.dashboardId();
+    if (!id) return;
+
+    const dashboard = this.store.selectSignal(selectorDashboardById(id))();
+
+    this.modalService.open(this.deleteDashboardTemplate, 'deleteDashboard',
+      { dashboard },
+    );
   }
 }

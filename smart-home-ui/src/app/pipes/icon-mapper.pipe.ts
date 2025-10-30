@@ -28,6 +28,6 @@ export class IconMapperPipe implements PipeTransform {
       shield: 'fa-shield-alt'
     };
 
-    return iconMappings[value.toLowerCase()] || 'fa-question-circle';
+    return iconMappings[value.toLowerCase()] || 'fa-table-columns';
   }
 }

@@ -31,9 +31,24 @@ export const createDashboardFailure = createAction(
   props<{ error: unknown }>()
 );
 
-export const discardChanges = createAction(
+export const revertDashboardChanges = createAction(
   //reverts to snapshot made at Edit Mode entry, then exitEditMode()
-  '[Dashboard] Discard Changes'
+  '[Dashboard] Revert Changes'
+);
+
+export const deleteDashboard = createAction(
+  '[Dashboard] Delete Dashboard',
+  props<{ dashboardId: string }>()
+);
+
+export const deleteDashboardSuccess = createAction(
+  '[Dashboard] Delete Dashboard Success',
+  props<{ dashboardId: string }>()
+);
+
+export const deleteDashboardFailure = createAction(
+  '[Dashboard] Delete Dashboard Failure',
+  props<{ error: unknown }>()
 );
 
 export const clearDashboardsError = createAction('[Dashboard] Clear Error');

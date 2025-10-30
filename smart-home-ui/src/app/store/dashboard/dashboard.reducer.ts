@@ -60,7 +60,7 @@ export const dashboardReducer = createReducer(
     error,
   })),
 
-  on(DashboardActions.discardChanges, state => ({
+  on(DashboardActions.revertDashboardChanges, state => ({
     ...state,
     selectedDashboard: state.snapshotDashboard,
     snapshotDashboard: null,
@@ -72,4 +72,23 @@ export const dashboardReducer = createReducer(
     ...state,
     error: null
   })),
+
+  on(DashboardActions.deleteDashboard, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(DashboardActions.deleteDashboardSuccess, (state, { dashboardId }) => ({
+    ...state,
+    loading: false,
+    selectedDashboard: state.dashboards[0],
+    dashboards: state.dashboards.filter(d => d.id !== dashboardId),
+  })),
+
+  on(DashboardActions.deleteDashboardFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error: error
+  }))
 );
