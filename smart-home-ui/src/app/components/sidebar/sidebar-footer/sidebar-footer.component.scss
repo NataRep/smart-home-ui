@@ -83,9 +83,9 @@
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        color: $error-color;
-        border-color: rgba($error-color, 0.4);
-        background: rgba($error-color, 0.08);
+        color: $warning-color;
+        border-color: rgba($warning-color, 0.4);
+        background: rgba($warning-color, 0.08);
       }
 
       &:hover::after {

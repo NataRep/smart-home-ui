@@ -10,7 +10,11 @@
       }
     </div>
     <div class="tabs__tools">
-      <button class="button_delete" (click)="onDashboardDeleteButton()">Delete</button>
+      @if (dashboardId() != 'overview') {
+        <button class="button_delete" (click)="onDashboardDeleteButton()">
+          <i class="fa-trash fa-solid"></i>
+        </button>
+      }
     </div>
   </div>
 

@@ -68,3 +68,11 @@ button {
     transform: rotate(360deg);
   }
 }
+
+button i {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: $text-color;
+    }
+  }
+}

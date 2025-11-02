@@ -29,7 +29,6 @@ export class DashboardComponent {
   private destroyRef = inject(DestroyRef);
   private modalService = inject(ModalService);
 
-  // Сигналы
   tabs = this.store.selectSignal(selectTabsList);
   isLoading = this.store.selectSignal(selectLoadingTabs);
   error = this.store.selectSignal(selectTabsError);
@@ -62,8 +61,6 @@ export class DashboardComponent {
         if (dashboardId) {
           this.loadTabs(dashboardId);
         }
-
-        //TODO если tabId нет в списке для dashboardId и он не равен 'null', то сделать редирект на 404
       });
   }
 

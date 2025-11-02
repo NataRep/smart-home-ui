@@ -9,7 +9,7 @@
   }
 </nav>
 <div class="tools" [ngClass]="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
-  <a class="button" (click)="onAddDashboard()">+ Add Dashboard</a>
+  <a (click)="onAddDashboard()">+ Add Dashboard</a>
 </div>
 <ng-template #addDashboardTemplate>
   <app-add-dashboard-form></app-add-dashboard-form>

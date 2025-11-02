@@ -57,7 +57,9 @@
     </div>
   }
   <div class="buttons-row">
-    <button type="button" [disabled]="isLoading()" (click)="onCancel()">Cancel</button>
-    <button type="submit" [disabled]="isLoading()">Add</button>
+    <button type="button" class="button" [disabled]="isLoading()" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="submit" class="button" [disabled]="isLoading()">Add</button>
   </div>
 </form>

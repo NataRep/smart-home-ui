@@ -1,8 +1,10 @@
 <div class="modal-backdrop">
   <div class="modal">
-    <h2>Удалить "{{ dashboard?.title }}"?</h2>
-    <p>Это действие необратимо.</p>
-    <button (click)="onCancel()">Cancel</button>
-    <button (click)="onDelete()">Delete</button>
+    <h2>Delete "{{ dashboard?.title }}"?</h2>
+    <p>This action is irreversible.</p>
+    <div class="buttons-row">
+      <button class="button" (click)="onCancel()">Cancel</button>
+      <button class="button button_red-hover" (click)="onDelete()">Delete</button>
+    </div>
   </div>
 </div>
