@@ -1,11 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal, TemplateRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { timer } from 'rxjs';
+import { Tab } from '../../models/api.model';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { ModalService } from '../../services/modal.service';
-import { selectorDashboardById } from '../../store/dashboard/dashboards.selectors';
+import { loadDashboardsSuccess, selectDashboard } from '../../store/dashboard/dashboard.actions';
+import { selectLoadingDashboards, selectorCurrentDashboard } from '../../store/dashboard/dashboards.selectors';
+import { enterEditMode } from '../../store/edit-mode/edit-mode.actions';
+import { selectEditModeState } from '../../store/edit-mode/edit-mode.selectors';
 import { loadTabs } from '../../store/tabs/tabs.actions';
 import { selectLoadingTabs, selectTabsError, selectTabsList } from '../../store/tabs/tabs.selectors';
 import { CardListComponent } from '../card-list/card-list.component';
@@ -14,7 +21,7 @@ import { ConfirmDeleteDashboardComponent } from '../confirm-delete-dashboard/con
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardListComponent, ConfirmDeleteDashboardComponent, CapitalizePipe],
+  imports: [CardListComponent, ConfirmDeleteDashboardComponent, CapitalizePipe, CommonModule, ReactiveFormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,12 +33,17 @@ export class DashboardComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private store = inject(Store);
+  private actions$ = inject(Actions);
   private destroyRef = inject(DestroyRef);
   private modalService = inject(ModalService);
 
+  dashboard = this.store.selectSignal(selectorCurrentDashboard);
   tabs = this.store.selectSignal(selectTabsList);
   isLoading = this.store.selectSignal(selectLoadingTabs);
+  isDashboardsLoaded = this.store.selectSignal(selectLoadingDashboards);
   error = this.store.selectSignal(selectTabsError);
+  editMode = this.store.selectSignal(selectEditModeState);
+  isEditing = computed(() => this.editMode().isEditing);
 
   showLoading = signal(false);
   dashboardId = signal<string | null>(null);
@@ -46,6 +58,17 @@ export class DashboardComponent {
     this.initRouteListener();
     this.initTabSelection();
     this.watchLoadingWithDelay(2000);
+    this.actions$.pipe(
+      ofType(loadDashboardsSuccess),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => {
+      this.onDashboardsLoaded();
+    });
+
+  }
+
+  private onDashboardsLoaded() {
+    this.store.dispatch(selectDashboard({ dashboardId: this.dashboardId(), }));
   }
 
   private initRouteListener() {
@@ -54,7 +77,6 @@ export class DashboardComponent {
       .subscribe(paramMap => {
         const dashboardId = paramMap.get('dashboardId');
         const tabId = paramMap.get('tabId');
-
         this.dashboardId.set(dashboardId);
         this.activeTabId.set(tabId);
 
@@ -108,13 +130,21 @@ export class DashboardComponent {
   }
 
   onDashboardDeleteButton() {
-    const id = this.dashboardId();
-    if (!id) return;
-
-    const dashboard = this.store.selectSignal(selectorDashboardById(id))();
-
     this.modalService.open(this.deleteDashboardTemplate, 'deleteDashboard',
-      { dashboard },
+      { dashboard: this.dashboard },
     );
+  }
+
+  onEnterEditMode() {
+    this.store.dispatch(enterEditMode())
+  }
+
+  shiftTab(direction: string) {
+    console.log(direction)
+  }
+
+  onEditTab(tab: Tab) {
+    console.log(tab)
+
   }
 }

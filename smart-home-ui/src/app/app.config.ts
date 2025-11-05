@@ -11,6 +11,7 @@ import { ApiPrefixInterceptor } from './interceptors/prefix.interceptor';
 import { DashboardEffects } from './store/dashboard/dashboard.effects';
 import { dashboardReducer } from './store/dashboard/dashboard.reducer';
 import { devicesReducer } from './store/devices/devices.reducer';
+import { editModeReducer } from './store/edit-mode/edit-mode.reducer';
 import { TabsEffects } from './store/tabs/tabs.effects';
 import { tabsReducer } from './store/tabs/tabs.reducer';
 
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       dashboards: dashboardReducer,
       //cards: cardsReducer,
       devices: devicesReducer,
+      editMode: editModeReducer
     }),
     provideEffects([DashboardEffects, TabsEffects]),
     provideStoreDevtools({

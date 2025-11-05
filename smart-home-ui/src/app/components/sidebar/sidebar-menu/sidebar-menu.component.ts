@@ -70,6 +70,7 @@ export class SidebarMenuComponent implements OnInit {
   onClickDashboard(id: string) {
     this.activeDashboardId.set(id);
     this.store.dispatch(loadTabsAndNavigate({ dashboardId: id }));
+    this.store.dispatch(DashboardActions.selectDashboard({ dashboardId: id, }));
   }
 
   onAddDashboard() {

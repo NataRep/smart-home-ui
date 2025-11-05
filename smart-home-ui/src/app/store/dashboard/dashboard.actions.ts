@@ -15,6 +15,11 @@ export const loadDashboardsFailure = createAction(
   props<{ error: unknown }>()
 );
 
+export const selectDashboard = createAction(
+  '[Dashboard] Open Dashboard',
+  props<{ dashboardId: string | null }>()
+)
+
 export const createDashboard = createAction(
   // effect sends POST /api/dashboards, then exitEditMode()
   '[Dashboard] Create Dashboard',

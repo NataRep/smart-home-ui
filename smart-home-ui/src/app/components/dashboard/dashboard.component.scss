@@ -8,14 +8,29 @@
   position: relative;
 }
 
-.tabs__header {
+.dashboard__header {
   width: 100%;
-  height: 72px;
-  display: flex;
   background-color: $background-color-secondary;
 }
 
-button {
+.header__row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard__tabs {
+  overflow: auto;
+  display: flex;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE и Edge */
+}
+
+.dashboard__tabs::-webkit-scrollbar {
+  display: none; /* Chrome, Safari и Opera */
+}
+
+.button_tab {
   background: none;
   border: none;
   color: $grey-middle-color;
@@ -27,14 +42,54 @@ button {
     color 0.25s linear;
 
   @include responsive-container-padding;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:not(.active):hover {
+      color: $text-color;
+    }
+  }
+}
+
+.dashboard__tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-bottom: 4px;
+  margin-right: 2rem;
+
+  @media (max-width: 980px) {
+    margin-right: 1rem;
+  }
+}
+
+.button_icon {
+  background: none;
+  border: none;
+  color: $grey-middle-color;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.25s linear;
+  padding: 0;
+  margin: 0 1rem;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: $text-color;
+    }
+  }
+
+  @media (max-width: 980px) {
+    padding: 0.5rem 1rem;
+  }
 }
 
 .active {
   color: $grey-light-color;
   border-bottom: 3px solid $grey-light-color;
+  cursor: auto;
 }
 
-.tabs__content {
+.dashboard__content {
   @include responsive-container-padding;
 }
 
@@ -69,10 +124,18 @@ button {
   }
 }
 
-button i {
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      color: $text-color;
-    }
-  }
+.dashboard__title {
+  display: flex;
+  align-items: center;
+  @include responsive-container-padding;
+}
+
+h1 {
+  margin: 0;
+  color: $secondary-color;
+}
+
+.dashboard__title .button_icon {
+  pointer-events: none;
+  color: $secondary-color;
 }

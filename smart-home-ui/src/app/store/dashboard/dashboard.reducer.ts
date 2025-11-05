@@ -40,6 +40,15 @@ export const dashboardReducer = createReducer(
     error,
   })),
 
+  on(DashboardActions.selectDashboard, (state, { dashboardId }) => {
+    const dashboard = state.dashboards.find(dashboard => dashboard.id === dashboardId);
+    return {
+      ...state,
+      selectedDashboard: dashboard ?? state.dashboards[0],
+      snapshotDashboard: dashboard ?? state.dashboards[0]
+    }
+  }),
+
   on(DashboardActions.createDashboard, state => ({
     ...state,
     loading: true,
@@ -90,5 +99,6 @@ export const dashboardReducer = createReducer(
     ...state,
     loading: false,
     error: error
-  }))
+  })),
+
 );

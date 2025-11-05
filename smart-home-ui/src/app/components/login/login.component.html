@@ -2,38 +2,42 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form__input">
     <label class="form__label" for="name">Name</label>
-    <input type="text" id="name" formControlName="name" placeholder="Your name">
-    @if(name.invalid && (name.dirty || name.touched)){
-    <div class="form__error">
-      @if(name.errors?.['required']){
-      <small>Enter your name</small>
-      }@else{
-      <small>Incorrect name</small>
-      }
-    </div>
+    <input type="text" id="name" formControlName="name" placeholder="Your name" />
+    @if (name.invalid && (name.dirty || name.touched)) {
+      <div class="form__error">
+        @if (name.errors?.['required']) {
+          <small>Enter your name</small>
+        } @else {
+          <small>Incorrect name</small>
+        }
+      </div>
     }
   </div>
   <div class="form__input-wrap">
     <label class="form__label" for="password">Password</label>
-    <input [type]="isPasswordVisible ? 'text' : 'password'" id="password" formControlName="password"
-      placeholder="******">
+    <input
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      id="password"
+      formControlName="password"
+      placeholder="******"
+    />
     <div class="password__icon" (click)="togglePasswordVisibility()">
-     <i class="fas" [ngClass]="isPasswordVisible ?  'fa-eye' :  'fa-eye-slash'"></i>
+      <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
     </div>
-    @if(password.invalid && (password.dirty || password.touched)){
-    <div class="form__error">
-      @if(password.errors?.['required']){
-      <small>Enter the password</small>
-      }@else{
-      <small>Incorrect password</small>
-      }
-    </div>
+    @if (password.invalid && (password.dirty || password.touched)) {
+      <div class="form__error">
+        @if (password.errors?.['required']) {
+          <small>Enter the password</small>
+        } @else {
+          <small>Incorrect password</small>
+        }
+      </div>
     }
   </div>
-  @if (errorMessage){
-  <div class="form__error-global">
-    {{ errorMessage }}
-  </div>
+  @if (errorMessage) {
+    <div class="form__error-global">
+      {{ errorMessage }}
+    </div>
   }
-  <button type="submit" [disabled]="isLoading">Log in</button>
+  <button type="submit" [disabled]="isLoading" class="button">Log in</button>
 </form>

@@ -23,3 +23,9 @@ export const selectorDashboardById = (id: string) =>
     selectDashboardsList,
     dashboards => dashboards.find(d => d.id === id) || null
   );
+
+export const selectorCurrentDashboard =
+  createSelector(
+    selectDashboardsState,
+    state => state.selectedDashboard
+  ) 

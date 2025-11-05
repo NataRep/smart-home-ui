@@ -1,24 +1,61 @@
 @if (showLoading()) {
   <div class="loading"><i class="fa-solid fa-circle-notch"></i><span>Loading...</span></div>
 } @else {
-  <div class="tabs__header">
-    <div class="tabs__list">
-      @for (tab of tabs(); track tab.id) {
-        <button [class.active]="activeTabId() === tab.id" (click)="onTabButton(tab.id)">
-          {{ tab.title | capitalize }}
-        </button>
+  <div class="dashboard__header">
+    <div class="header__row">
+      @if (isEditing()) {
+        <div class="dashboard__edit-tools">
+          <div class="dashboard__title">
+            <h1>{{ dashboard()?.title }}</h1>
+            <button class="button_icon button_edit">
+              <i class="fa-pencil fa-solid"></i>
+            </button>
+          </div>
+        </div>
       }
     </div>
-    <div class="tabs__tools">
-      @if (dashboardId() != 'overview') {
-        <button class="button_delete" (click)="onDashboardDeleteButton()">
-          <i class="fa-trash fa-solid"></i>
-        </button>
+    <div class="header__row">
+      <div class="dashboard__tabs">
+        @for (tab of tabs(); track tab.id; let i = $index; let last = $last) {
+          <div class="tabs__tab">
+            <button
+              class="button_tab"
+              [class.active]="activeTabId() === tab.id"
+              (click)="onTabButton(tab.id)"
+            >
+              @if (i > 0 && isEditing()) {
+                <i class="fa-solid fa-arrow-left" (click)="shiftTab('left')"></i>
+              }
+              {{ tab.title | capitalize }}
+              @if (isEditing()) {
+                <button class="button_icon button_edit" (click)="onEditTab(tab)">
+                  <i class="fa-pencil fa-solid"></i>
+                </button>
+                @if (!last) {
+                  <i class="fa-solid fa-arrow-right" (click)="shiftTab('right')"></i>
+                }
+              }
+            </button>
+          </div>
+        }
+      </div>
+      @if (!isEditing()) {
+        <div class="dashboard__tools">
+          @if (tabs().length > 0) {
+            <button class="button_icon button_edit" (click)="onEnterEditMode()">
+              <i class="fa-pencil fa-solid"></i>
+            </button>
+          }
+          @if (dashboardId() != 'overview') {
+            <button class="button_icon button_delete" (click)="onDashboardDeleteButton()">
+              <i class="fa-trash fa-solid"></i>
+            </button>
+          }
+        </div>
       }
     </div>
   </div>
-
-  <div class="tabs__content">
+  <div class="dashboard__content">
     <app-card-list [cardsData]="activeTabCards()"></app-card-list>
   </div>
 }

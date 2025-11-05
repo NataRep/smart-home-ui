@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Device } from '../../models/api.model';
 import { DashboardService } from '../../services/dashboard.service';
@@ -11,6 +12,7 @@ export class TabsEffects {
   private actions$ = inject(Actions);
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
+  private store = inject(Store);
 
   // Загрузка вкладок
   loadTabs$ = createEffect(() =>
